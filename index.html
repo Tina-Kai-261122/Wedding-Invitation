@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>OOO & XXX 婚宴邀請函</title>
+
+    <!-- 引入 Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            oatmeal: '#FBF9F5', // 燕麥米底色
+            milkTea: '#C9A98C', // 溫柔奶茶主色
+            cocoa: '#4A3E3D',   // 可可深棕文字
+            warmCard: '#F4ECE4', // 柔和米咖卡片底色
+          }
+        }
+      }
+    }
+
+    </script>
+
+    <style>
+    /* 列印專屬優化設定（另存 PDF 時觸發） */
+    @media print {
+      .no-print { display: none !important; }
+      body {
+        background: #FAF8F5 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .print-page-break {
+        page-break-after: always;
+        break-after: page;
+      }
+      .shadow-sm, .shadow-md {
+        box-shadow: none !important;
+      }
+    }
+
+    </style>
+</head>
+<body class="bg-oatmeal text-cocoa font-sans antialiased selection:bg-milkTea selection:text-white">
+
+<!-- ==================== 頂部列印 / 匯出工具列（PDF 不會印出） ==================== -->
+<div class="no-print bg-milkTea text-white text-xs md:text-sm py-2.5 px-4 text-center flex justify-center items-center gap-3 sticky top-0 z-50 shadow-sm">
+    <span>💡 如需給長輩紙本或傳送 PDF，可直接在此另存：</span>
+    <button onclick="window.print()"
+            class="bg-cocoa hover:bg-opacity-80 text-white font-medium px-3.5 py-1 rounded-md shadow text-xs transition">
+        匯出 / 列印 PDF
+    </button>
+</div>
+
+<main class="max-w-xl md:max-w-2xl mx-auto px-5 py-10 space-y-10">
+
+    <!-- ==================== 第一頁核心資訊區 ==================== -->
+    <div class="space-y-10">
+
+        <!-- 標題與新人姓名 -->
+        <header class="text-center space-y-3">
+            <p class="text-xs md:text-sm tracking-[0.25em] text-milkTea font-semibold uppercase">Wedding Invitation</p>
+            <h1 class="text-3xl md:text-4xl font-serif font-bold tracking-widest text-cocoa">OOO ＆ XXX</h1>
+            <div class="h-[1px] w-16 bg-milkTea/60 mx-auto my-3"></div>
+            <p class="text-base md:text-lg font-medium tracking-wide">2026 年 11 月 22 日（星期日）</p>
+            <p class="text-xs md:text-sm text-stone-500 tracking-wider">歲次丙午年 農曆十月十四日</p>
+        </header>
+
+        <!-- 照片展示區（預留 3 張照片位置，支援 RWD） -->
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- 主照片（大圖） -->
+            <div class="aspect-[4/5] bg-warmCard rounded-2xl overflow-hidden shadow-sm border border-stone-200/60 flex items-center justify-center relative">
+                <!-- 放入照片時替換此行：<img src="photos/photo1.jpg" alt="新人主照" class="w-full h-full object-cover"> -->
+                <div class="text-center p-4">
+                    <span class="text-stone-400 text-sm block">📷【新人主照片】</span>
+                    <span class="text-stone-400 text-xs">（建議直式 4:5 比例）</span>
+                </div>
+            </div>
+
+            <!-- 側邊兩張次照片 -->
+            <div class="grid grid-cols-2 md:grid-cols-1 gap-4">
+                <div class="aspect-[16/10] bg-warmCard rounded-2xl overflow-hidden shadow-sm border border-stone-200/60 flex items-center justify-center relative">
+                    <!-- <img src="photos/photo2.jpg" alt="新人合影2" class="w-full h-full object-cover"> -->
+                    <span class="text-stone-400 text-xs">📷【照片 2】</span>
+                </div>
+                <div class="aspect-[16/10] bg-warmCard rounded-2xl overflow-hidden shadow-sm border border-stone-200/60 flex items-center justify-center relative">
+                    <!-- <img src="photos/photo3.jpg" alt="新人合影3" class="w-full h-full object-cover"> -->
+                    <span class="text-stone-400 text-xs">📷【照片 3】</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 當日流程時序 -->
+        <section class="bg-white rounded-2xl p-6 shadow-sm border border-warmCard text-center space-y-3">
+            <h2 class="text-sm font-bold tracking-widest text-milkTea uppercase">喜宴當日時程</h2>
+            <div class="grid grid-cols-3 divide-x divide-stone-200 text-center pt-2">
+                <div class="px-2">
+                    <p class="text-xs text-stone-500">入席迎賓</p>
+                    <p class="text-base md:text-lg font-bold mt-1 text-cocoa">11:00</p>
+                </div>
+                <div class="px-2">
+                    <p class="text-xs text-stone-500">準時開席</p>
+                    <p class="text-base md:text-lg font-bold mt-1 text-cocoa">12:00</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 雙方主婚人與長輩具名 -->
+        <section class="bg-warmCard/60 rounded-2xl p-6 text-center space-y-4 border border-warmCard">
+            <h3 class="text-xs font-semibold tracking-widest text-stone-500 uppercase">雙方主婚人</h3>
+            <div class="grid grid-cols-2 gap-6 text-sm md:text-base">
+                <div class="space-y-1.5">
+                    <p class="text-xs text-milkTea font-bold">新郎主婚人</p>
+                    <p class="font-bold text-cocoa">新郎父親 ＆ 新郎母親</p>
+                </div>
+                <div class="space-y-1.5">
+                    <p class="text-xs text-milkTea font-bold">新娘主婚人</p>
+                    <p class="font-bold text-cocoa">新娘父親 ＆ 新娘母親</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dress Code 著裝建議 -->
+        <section class="text-center space-y-3 pt-2">
+            <h3 class="text-xs font-bold tracking-widest text-milkTea uppercase">Dress Code 穿搭色彩</h3>
+            <p class="text-xs text-stone-500">誠摯邀請大家穿著溫潤的大地色系，與庭園綠意相互輝映</p>
+            <div class="flex justify-center items-center gap-6 pt-1">
+                <div class="flex items-center gap-2">
+                    <span class="w-4 h-4 rounded-full bg-[#E5DEC9] inline-block border border-stone-300"></span>
+                    <span class="text-xs font-medium">燕麥米色</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="w-4 h-4 rounded-full bg-[#C9A98C] inline-block border border-stone-300"></span>
+                    <span class="text-xs font-medium">溫柔奶茶</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="w-4 h-4 rounded-full bg-[#4A3E3D] inline-block border border-stone-300"></span>
+                    <span class="text-xs font-medium">可可棕色</span>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- 列印分頁標記：匯出 PDF 時從這裡切換至第二頁 -->
+    <div class="print-page-break"></div>
+
+    <!-- ==================== 第二頁：場地、交通與重要提醒 ==================== -->
+    <div class="space-y-8">
+
+        <!-- 宴客地點資訊 -->
+        <section class="text-center space-y-2">
+            <p class="text-xs font-semibold tracking-widest text-milkTea uppercase">Venue & Location</p>
+            <h2 class="text-xl md:text-2xl font-bold text-cocoa">成美文化園 - 松柏軒景觀餐廳</h2>
+            <p class="text-sm text-stone-600">彰化縣永靖鄉中山路二段 60 號</p>
+        </section>
+
+        <!-- 交通指引卡片清單 -->
+        <section class="space-y-3.5 text-xs md:text-sm">
+
+            <!-- 自駕與停車卡片 -->
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-warmCard space-y-2">
+                <div class="flex items-center gap-2">
+                    <span class="text-base">🚗</span>
+                    <h4 class="font-bold text-cocoa">自行開車與路線導航</h4>
+                </div>
+                <p class="text-stone-600 leading-relaxed">
+                    • <b>南下</b>：國道 1 號或 3 號接台 76 線快速道路 → 埔心交流道下 → 轉台 1 線抵達。<br>
+                    • <b>北上</b>：國道 1 號經北斗交流道下 → 沿 150 縣道轉台 1 線抵達。
+                </p>
+                <div class="mt-2 p-3 bg-warmCard/50 rounded-xl border border-warmCard text-stone-700">
+                    <p class="font-bold text-amber-900">⚠️ 停車登記提醒：</p>
+                    <p class="text-xs leading-relaxed mt-0.5">
+                        園區設有專屬停車場。離場需折抵車牌，為簡化當天作業，建議開車前來的貴賓<b>預先於下方表單提供車牌</b>，或於當天迎賓接待處登記。
+                    </p>
+                </div>
+            </div>
+
+            <!-- 大眾運輸卡片 -->
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-warmCard space-y-2">
+                <div class="flex items-center gap-2">
+                    <span class="text-base">🚄</span>
+                    <h4 class="font-bold text-cocoa">高鐵 / 台鐵轉乘指引</h4>
+                </div>
+                <p class="text-stone-600 leading-relaxed">
+                    • <b>高鐵彰化站</b>：出站後轉乘「7 號快捷公車」至「永靖站」下車，步行約 5 分鐘抵達。<br>
+                    • <b>台鐵員林站</b>：步行至員林轉運站，轉乘「7 號快捷公車」或客運至「永靖站」下車。
+                </p>
+            </div>
+
+        </section>
+
+        <!-- ==================== 互動回填表單（網頁顯示，列印自動隱藏） ==================== -->
+        <!-- 隱藏 iframe 用於無跳轉提交 -->
+        <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"
+                onload="if(submitted) { showThankYou(); }"></iframe>
+
+        <section class="no-print bg-white p-6 md:p-8 rounded-2xl shadow-md border-2 border-milkTea/40 space-y-6">
+            <div class="text-center space-y-1">
+                <h3 class="text-lg md:text-xl font-bold text-cocoa">出席資訊與遊園登記</h3>
+                <p class="text-xs text-stone-500">感謝您的祝福，請撥冗填寫以利我們提前為您安排停車與園區門票</p>
+            </div>
+
+            <!-- 修正後的 action 網址 -->
+            <form
+                    id="rsvpForm"
+                    action="https://docs.google.com/forms/d/e/1FAIpQLScpgHrolTHe31IcxNL-ZtqoyU79mOqyEIXAXDmjx2DYd_9eqw/formResponse"
+
+                    method="POST"
+                    target="hidden_iframe"
+                    onsubmit="submitted=true;"
+                    class="space-y-5 text-xs md:text-sm"
+            >
+                <!-- 1. 姓名 -->
+                <div>
+                    <label class="block font-semibold mb-1.5 text-cocoa">您的尊姓大名 <span
+                            class="text-red-500">*</span></label>
+                    <input type="text" name="entry.448957124" required placeholder="請填寫一位主要聯絡人姓名（例：王小明）"
+                           class="w-full px-3.5 py-2.5 border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-milkTea bg-warmCard/20"/>
+                </div>
+
+                <!-- 2. 出席代表形式 -->
+                <div>
+                    <label class="block font-semibold mb-2 text-cocoa">出席代表形式 <span class="text-red-500">*</span></label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="flex items-center gap-2 p-3 border rounded-xl cursor-pointer hover:bg-warmCard/30 transition">
+                            <input type="radio" name="entry.1227706663" value="個人親自出席" checked
+                                   onchange="toggleFamilyGroup(false)" class="text-milkTea focus:ring-milkTea"/>
+                            <span>個人親自出席</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 border rounded-xl cursor-pointer hover:bg-warmCard/30 transition">
+                            <input type="radio" name="entry.1227706663" value="代表家庭 / 親友同行"
+                                   onchange="toggleFamilyGroup(true)" class="text-milkTea focus:ring-milkTea"/>
+                            <span>代表家庭 / 親友同行</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 2-A. 家庭/團體動態展開區塊 -->
+                <div id="familySection" class="hidden p-4 bg-warmCard/30 rounded-xl border border-warmCard space-y-3">
+                    <div>
+                        <label class="block font-semibold mb-1 text-cocoa">同行總出席人數（含您本人） <span
+                                class="text-red-500">*</span></label>
+                        <select id="guestCountSelect" name="entry.1188546797"
+                                class="w-full px-3.5 py-2 border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-milkTea bg-white">
+                            <option value="2 位">2 位</option>
+                            <option value="3 位">3 位</option>
+                            <option value="4 位">4 位</option>
+                            <option value="5 位">5 位</option>
+                            <option value="6 位">6 位</option>
+                            <option value="7 位">7 位</option>
+                            <option value="8 位">8 位</option>
+                            <option value="9 位">9 位</option>
+                            <option value="10 位">10 位</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-semibold mb-1 text-cocoa">同行成員姓名 / 寶號（非必填）</label>
+                        <input type="text" name="entry.1239814391" placeholder="可填寫親友姓名，方便安排入席名牌"
+                               class="w-full px-3.5 py-2 border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-milkTea bg-white"/>
+                    </div>
+                </div>
+
+                <!-- 3. 前往交通方式 -->
+                <div>
+                    <label class="block font-semibold mb-2 text-cocoa">當日預計前往方式 <span
+                            class="text-red-500">*</span></label>
+                    <div class="space-y-2">
+                        <label class="flex items-center gap-2.5 p-3 border rounded-xl cursor-pointer hover:bg-warmCard/30 transition">
+                            <input type="radio" name="entry.1574191851" value="自行開車（駕駛）"
+                                   onchange="toggleCarInput(true)" class="text-milkTea focus:ring-milkTea"/>
+                            <span>自行開車（駕駛）</span>
+                        </label>
+                        <label class="flex items-center gap-2.5 p-3 border rounded-xl cursor-pointer hover:bg-warmCard/30 transition">
+                            <input type="radio" name="entry.1574191851" value="搭乘同行親友車輛（共乘乘客）" checked
+                                   onchange="toggleCarInput(false)" class="text-milkTea focus:ring-milkTea"/>
+                            <span>搭乘同行親友車輛（共乘）</span>
+                        </label>
+                        <label class="flex items-center gap-2.5 p-3 border rounded-xl cursor-pointer hover:bg-warmCard/30 transition">
+                            <input type="radio" name="entry.1574191851" value="搭乘大眾運輸工具或步行"
+                                   onchange="toggleCarInput(false)" class="text-milkTea focus:ring-milkTea"/>
+                            <span>搭乘大眾運輸工具（高鐵／台鐵＋公車）</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 3-A. 車牌號碼動態展開區塊 -->
+                <div id="carSection" class="hidden p-4 bg-warmCard/30 rounded-xl border border-warmCard space-y-1.5">
+                    <label class="block font-semibold text-cocoa">車輛車牌號碼 <span
+                            class="text-red-500">*</span></label>
+                    <input type="text" id="carPlateInput" name="entry.821969454"
+                           placeholder="例：ABC-1234（方便提前登錄折抵停車費）"
+                           class="w-full px-3.5 py-2.5 border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-milkTea bg-white"/>
+                </div>
+
+                <!-- 4. 遊園意向 -->
+                <div>
+                    <label class="block font-semibold mb-1 text-cocoa">成美文化園遊園門票索取 <span
+                            class="text-red-500">*</span></label>
+                    <p class="text-xs text-stone-500 mb-2">
+                        成美文化園庭園景致怡人，入園需憑券。我們將為貴賓提前備妥票券。</p>
+                    <select name="entry.228889561"
+                            class="w-full px-3.5 py-2.5 border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-milkTea bg-warmCard/20">
+                        <!-- 注意：此處 value 必須與你的 Google 表單選項字串 100% 相同 -->
+                        <option value="需要，預計入園漫遊（依出席總人數備票）">是，預計順道入園漫遊（依出席總人數為您備票）
+                        </option>
+                        <option value="不需要，僅參加喜宴">否，僅參加喜宴</option>
+                    </select>
+                </div>
+
+                <!-- 送出按鈕 -->
+                <button type="submit" id="submit-btn"
+                        class="w-full bg-milkTea hover:bg-opacity-90 text-white font-bold py-3.5 rounded-xl shadow transition duration-150">
+                    確認送出登記資料
+                </button>
+            </form>
+        </section>
+
+        <!-- 動態切換、localStorage 自動調閱與按鈕狀態更新腳本 -->
+        <script>
+          let submitted = false;
+          const STORAGE_KEY = 'wedding_rsvp_data';
+
+          // 頁面載入時觸發：自動檢查並調閱先前的登記紀錄
+          window.addEventListener('DOMContentLoaded', () => {
+            loadSavedData();
+          });
+
+          // 控制家庭/團體同行區塊的展開與收合
+          function toggleFamilyGroup(isFamily) {
+            const familySection = document.getElementById('familySection');
+            const guestSelect = document.getElementById('guestCountSelect');
+            if (isFamily) {
+              familySection.classList.remove('hidden');
+              guestSelect.disabled = false;
+            } else {
+              familySection.classList.add('hidden');
+              guestSelect.disabled = true;
+            }
+          }
+
+          // 控制車牌號碼輸入框的展開與必填狀態
+          function toggleCarInput(isDriving) {
+            const carSection = document.getElementById('carSection');
+            const carInput = document.getElementById('carPlateInput');
+            if (isDriving) {
+              carSection.classList.remove('hidden');
+              carInput.required = true;
+            } else {
+              carSection.classList.add('hidden');
+              carInput.required = false;
+              if (!isDriving) carInput.value = '';
+            }
+          }
+
+          // 自動調閱 localStorage 資料並切換按鈕文字
+          function loadSavedData() {
+            const saved = localStorage.getItem(STORAGE_KEY);
+
+            // 如果是全新訪客（從未送出過）
+            if (!saved) {
+              toggleFamilyGroup(false);
+              toggleCarInput(false);
+              return;
+            }
+
+            try {
+              const data = JSON.parse(saved);
+
+              // 1. 回填聯絡人姓名
+              const nameInput = document.querySelector('input[name="entry.448957124"]');
+              if (nameInput && data.name) nameInput.value = data.name;
+
+              // 2. 回填出席代表形式
+              const repRadios = document.querySelectorAll('input[name="entry.1227706663"]');
+              repRadios.forEach(r => {
+                if (r.value === data.repType) r.checked = true;
+              });
+              const isFamily = (data.repType === '代表家庭 / 親友同行');
+              toggleFamilyGroup(isFamily);
+              if (isFamily && data.guestCount) document.getElementById('guestCountSelect').value = data.guestCount;
+              if (isFamily && data.members) document.querySelector('input[name="entry.1239814391"]').value = data.members;
+
+              // 3. 回填交通方式
+              const transRadios = document.querySelectorAll('input[name="entry.1574191851"]');
+              transRadios.forEach(r => {
+                if (r.value === data.transport) r.checked = true;
+              });
+              const isDriving = (data.transport === '自行開車（駕駛）');
+              toggleCarInput(isDriving);
+              if (isDriving && data.carPlate) document.getElementById('carPlateInput').value = data.carPlate;
+
+              // 4. 回填遊園門票索取意願
+              const parkSelect = document.querySelector('select[name="entry.228889561"]');
+              if (parkSelect && data.park) parkSelect.value = data.park;
+
+              // 5. 動態修改按鈕狀態為「更新資料」
+              const btn = document.getElementById('submit-btn');
+              if (btn) {
+                btn.innerText = '更新登記資料（已載入上次紀錄）';
+                btn.classList.remove('bg-milkTea');
+                btn.classList.add('bg-cocoa'); // 換成沉穩的可可深色，強調是修改/更新模式
+              }
+
+            } catch (err) {
+              console.error('調閱歷史資料時發生異常：', err);
+            }
+          }
+
+          // 表單成功送出後：更新 localStorage 儲存內容並彈出回饋
+          function showThankYou() {
+            // 收集當前填寫的最新內容
+            const currentData = {
+              name: document.querySelector('input[name="entry.448957124"]')?.value || '',
+              repType: document.querySelector('input[name="entry.1227706663"]:checked')?.value || '',
+              guestCount: document.getElementById('guestCountSelect')?.value || '',
+              members: document.querySelector('input[name="entry.1239814391"]')?.value || '',
+              transport: document.querySelector('input[name="entry.1574191851"]:checked')?.value || '',
+              carPlate: document.getElementById('carPlateInput')?.value || '',
+              park: document.querySelector('select[name="entry.228889561"]')?.value || '',
+              updatedAt: new Date().toISOString()
+            };
+
+            // 存入賓客瀏覽器本地
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(currentData));
+
+            alert('登記資料已成功送出！若後續行程或車牌有變動，再次開啟此頁面即可隨時修改。');
+
+            // 送出後按鈕提示完成，依然允許再次修改
+            const btn = document.getElementById('submit-btn');
+            if (btn) {
+              btn.innerText = '✓ 資料已更新完成';
+              btn.classList.remove('bg-milkTea');
+              btn.classList.add('bg-stone-700');
+            }
+          }
+
+        </script>
+    </div>
+
+</main>
+</body>
+</html>
