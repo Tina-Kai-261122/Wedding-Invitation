@@ -3,7 +3,13 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>OOO & XXX 婚宴邀請函</title>
+    <title>詹博凱 ＆ 金鈺珣 婚宴邀請函</title>
+
+    <!-- 引入 Google Fonts：思源宋體 (Noto Serif TC) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700;900&display=swap"
+          rel="stylesheet">
 
     <!-- 引入 Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -11,19 +17,85 @@
     tailwind.config = {
       theme: {
         extend: {
+          fontFamily: {
+            serif: ['"Noto Serif TC"', 'serif'],
+          },
           colors: {
             oatmeal: '#FBF9F5', // 燕麥米底色
             milkTea: '#C9A98C', // 溫柔奶茶主色
-            cocoa: '#4A3E3D',   // 可可深棕文字
+            cocoa: '#724C2F',   // 可可深棕文字
             warmCard: '#F4ECE4', // 柔和米咖卡片底色
+            introBg: '#CEA580', // 開場專屬背景色 RGB(206, 165, 128)
           }
         }
       }
     }
-
     </script>
 
     <style>
+    /* 將黑線轉換為 #C9A98C 奶茶色的 CSS Filter */
+    .filter-milk-tea {
+      filter: invert(74%) sepia(19%) saturate(630%) hue-rotate(346deg) brightness(90%) contrast(88%);
+    }
+
+    /* 3D 輪播卡片平滑過渡動效 */
+    .carousel-item {
+      transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease, filter 0.3s ease;
+      will-change: transform, opacity;
+    }
+
+    /* 零閃爍遮罩通用類別：常駐 GPU 合成層 */
+    .crayon-frame-layer {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      will-change: opacity;
+      pointer-events: none;
+      -webkit-mask-size: contain;
+      mask-size: contain;
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+      -webkit-mask-position: center;
+      mask-position: center;
+    }
+
+    /* 預先定義 10 幀遮罩路徑，避免換圖時重新解碼閃爍 */
+    .mask-f1  { -webkit-mask-image: url('Crayon_AI_1.png');  mask-image: url('Crayon_AI_1.png'); }
+    .mask-f2  { -webkit-mask-image: url('Crayon_AI_2.png');  mask-image: url('Crayon_AI_2.png'); }
+    .mask-f3  { -webkit-mask-image: url('Crayon_AI_3.png');  mask-image: url('Crayon_AI_3.png'); }
+    .mask-f4  { -webkit-mask-image: url('Crayon_AI_4.png');  mask-image: url('Crayon_AI_4.png'); }
+    .mask-f5  { -webkit-mask-image: url('Crayon_AI_5.png');  mask-image: url('Crayon_AI_5.png'); }
+    .mask-f6  { -webkit-mask-image: url('Crayon_AI_6.png');  mask-image: url('Crayon_AI_6.png'); }
+    .mask-f7  { -webkit-mask-image: url('Crayon_AI_7.png');  mask-image: url('Crayon_AI_7.png'); }
+    .mask-f8  { -webkit-mask-image: url('Crayon_AI_8.png');  mask-image: url('Crayon_AI_8.png'); }
+    .mask-f9  { -webkit-mask-image: url('Crayon_AI_9.png');  mask-image: url('Crayon_AI_9.png'); }
+    .mask-f10 { -webkit-mask-image: url('Crayon_AI_10.png'); mask-image: url('Crayon_AI_10.png'); }
+
+    /* 預設第 1 幀顯示 */
+    .crayon-frame-layer.active-frame {
+      opacity: 1 !important;
+    }
+
+    /* 音樂播放狀態音波動效 */
+    @keyframes musicWave {
+      0%, 100% { transform: scaleY(0.45); }
+      50% { transform: scaleY(1); }
+    }
+    .animate-wave-1 { animation: musicWave 1.2s ease-in-out infinite; transform-origin: bottom; }
+    .animate-wave-2 { animation: musicWave 1.2s ease-in-out infinite 0.25s; transform-origin: bottom; }
+    .animate-wave-3 { animation: musicWave 1.2s ease-in-out infinite 0.5s; transform-origin: bottom; }
+
+    /* 進入按鈕引導呼吸動效 */
+    @keyframes enterPulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); }
+      50% { transform: scale(1.05); box-shadow: 0 6px 25px rgba(0, 0, 0, 0.28); }
+    }
+    .animate-enter-pulse {
+      animation: enterPulse 1.8s ease-in-out infinite;
+    }
+
     /* 列印專屬優化設定（另存 PDF 時觸發） */
     @media print {
       .no-print { display: none !important; }
@@ -40,120 +112,289 @@
         box-shadow: none !important;
       }
     }
-
     </style>
 </head>
 <body class="bg-oatmeal text-cocoa font-sans antialiased selection:bg-milkTea selection:text-white">
 
-<!-- ==================== 頂部列印 / 匯出工具列（PDF 不會印出） ==================== -->
-<div class="no-print bg-milkTea text-white text-xs md:text-sm py-2.5 px-4 text-center flex justify-center items-center gap-3 sticky top-0 z-50 shadow-sm">
-    <span>💡 如需給長輩紙本或傳送 PDF，可直接在此另存：</span>
-    <button onclick="window.print()"
-            class="bg-cocoa hover:bg-opacity-80 text-white font-medium px-3.5 py-1 rounded-md shadow text-xs transition">
-        匯出 / 列印 PDF
-    </button>
+<!-- 背景音樂標籤 -->
+<audio id="bgMusic" src="Music_2.mp3" loop preload="auto"></audio>
+
+<!-- ==================== 開場全螢幕動畫覆蓋層（黑底影片+mix-blend-screen零色差） ==================== -->
+<div id="introOverlay" class="no-print fixed inset-0 z-[100] bg-[#CEA580] flex flex-col items-center justify-center p-4 transition-opacity duration-700 select-none" style="isolation: isolate;">
+
+    <!-- 影片包覆區：左右切齊螢幕並置中 -->
+    <div class="relative w-full max-w-xl flex flex-col items-center">
+        <video id="introVideo"
+               src="開場_0.05間距_黑.mp4"
+               autoplay
+               muted
+               playsinline
+               webkit-playsinline
+               preload="auto"
+               class="w-full h-auto object-contain mx-auto mix-blend-screen">
+        </video>
+
+        <!-- 放置在影片正下方的引導按鈕 -->
+        <div class="mt-6 flex justify-center w-full">
+            <button id="skipIntroBtn" type="button" aria-label="進入婚宴邀請函"
+                    class="px-5 py-2.5 rounded-full bg-black/25 backdrop-blur-sm text-white/90 text-xs font-sans tracking-widest hover:bg-black/40 active:scale-95 transition-all duration-300">
+                <span id="btnText">SKIP ❯</span>
+            </button>
+        </div>
+    </div>
 </div>
 
-<main class="max-w-xl md:max-w-2xl mx-auto px-5 py-10 space-y-10">
+<!-- ==================== 頂部導覽列（始終置頂） ==================== -->
+<header class="no-print sticky top-0 z-50 bg-[#4A3E3D] px-6 py-4 flex justify-between items-center shadow-md">
+    <!-- 左側音樂切換按鈕（播放 / 靜音） -->
+    <button id="musicToggleBtn" type="button" aria-label="切換音樂"
+            class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-white/10 hover:bg-white/20 active:scale-95 transition-all text-white cursor-pointer select-none">
 
-    <!-- ==================== 第一頁核心資訊區 ==================== -->
-    <div class="space-y-10">
+        <!-- 播放中圖示（動態音波） -->
+        <span id="musicPlayingIcon" class="flex items-center gap-0.5 h-3.5 w-3.5">
+            <span class="w-0.5 h-3.5 bg-white rounded-full animate-wave-1"></span>
+            <span class="w-0.5 h-3.5 bg-white rounded-full animate-wave-2"></span>
+            <span class="w-0.5 h-3.5 bg-white rounded-full animate-wave-3"></span>
+        </span>
 
-        <!-- 標題與新人姓名 -->
-        <header class="text-center space-y-3">
-            <p class="text-xs md:text-sm tracking-[0.25em] text-milkTea font-semibold uppercase">Wedding Invitation</p>
-            <h1 class="text-3xl md:text-4xl font-serif font-bold tracking-widest text-cocoa">OOO ＆ XXX</h1>
-            <div class="h-[1px] w-16 bg-milkTea/60 mx-auto my-3"></div>
-            <p class="text-base md:text-lg font-medium tracking-wide">2026 年 11 月 22 日（星期日）</p>
-            <p class="text-xs md:text-sm text-stone-500 tracking-wider">歲次丙午年 農曆十月十四日</p>
-        </header>
+        <!-- 靜音/暫停中圖示 -->
+        <svg id="musicMutedIcon" class="w-3.5 h-3.5 hidden text-white/70" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+        </svg>
 
-        <!-- 照片展示區（預留 3 張照片位置，支援 RWD） -->
-        <section class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <!-- 主照片（大圖） -->
-            <div class="aspect-[4/5] bg-warmCard rounded-2xl overflow-hidden shadow-sm border border-stone-200/60 flex items-center justify-center relative">
-                <!-- 放入照片時替換此行：<img src="photos/photo1.jpg" alt="新人主照" class="w-full h-full object-cover"> -->
-                <div class="text-center p-4">
-                    <span class="text-stone-400 text-sm block">📷【新人主照片】</span>
-                    <span class="text-stone-400 text-xs">（建議直式 4:5 比例）</span>
+        <span id="musicText" class="text-xs font-sans tracking-wider text-stone-200">BGM</span>
+    </button>
+
+    <!-- 右側白線選單按鈕（跳轉功能觸發點） -->
+    <button type="button" aria-label="導覽選單"
+            class="flex flex-col justify-center items-center gap-1.5 w-8 h-8 focus:outline-none cursor-pointer">
+        <span class="w-6 h-0.5 bg-[#FFFFFF] rounded-full transition-all"></span>
+        <span class="w-6 h-0.5 bg-[#FFFFFF] rounded-full transition-all"></span>
+        <span class="w-6 h-0.5 bg-[#FFFFFF] rounded-full transition-all"></span>
+    </button>
+</header>
+
+<main class="max-w-xl md:max-w-2xl mx-auto px-5 py-6 space-y-12">
+
+    <!-- ==================== 第一頁核心資訊區（9:16 封面首屏） ==================== -->
+    <div class="relative w-full max-w-md mx-auto pt-6 pb-4 overflow-x-clip">
+
+        <!-- 文字資訊區：固定間距比例 -->
+        <div class="space-y-5 z-10 relative">
+            <p class="text-base md:text-sm tracking-[0.3em] text-[#C9A98C] font-semibold uppercase text-center pl-1">
+                WEDDING INVITATION
+            </p>
+
+            <!-- 名字交錯排版與水平線條（緊湊黃金比例版） -->
+            <div class="py-1 space-y-0">
+                <!-- 新郎姓名（靠左） -->
+                <div class="text-left pl-2">
+                    <span class="text-[clamp(2.5rem,8vw,4.5rem)] font-serif font-bold text-[#4A3E3D] tracking-wider inline-block leading-none">
+                        詹博凱
+                    </span>
+                </div>
+
+                <!-- 分隔線與 & 符號：極窄垂直間距 -->
+                <div class="flex items-center justify-center gap-4 py-1 md:py-1.5 select-none">
+                    <div class="flex-1 h-[1px] bg-[#4A3E3D]/40"></div>
+                    <span class="text-2xl md:text-3xl font-serif text-[#4A3E3D] px-2 flex-shrink-0 leading-none">
+                        &amp;
+                    </span>
+                    <div class="flex-1 h-[1px] bg-[#4A3E3D]/40"></div>
+                </div>
+
+                <!-- 新娘姓名（靠右） -->
+                <div class="text-right pr-2">
+                    <span class="text-[clamp(2.5rem,8vw,4.5rem)] font-serif font-bold text-[#4A3E3D] tracking-wider inline-block leading-none">
+                        金鈺珣
+                    </span>
                 </div>
             </div>
 
-            <!-- 側邊兩張次照片 -->
-            <div class="grid grid-cols-2 md:grid-cols-1 gap-4">
-                <div class="aspect-[16/10] bg-warmCard rounded-2xl overflow-hidden shadow-sm border border-stone-200/60 flex items-center justify-center relative">
-                    <!-- <img src="photos/photo2.jpg" alt="新人合影2" class="w-full h-full object-cover"> -->
-                    <span class="text-stone-400 text-xs">📷【照片 2】</span>
-                </div>
-                <div class="aspect-[16/10] bg-warmCard rounded-2xl overflow-hidden shadow-sm border border-stone-200/60 flex items-center justify-center relative">
-                    <!-- <img src="photos/photo3.jpg" alt="新人合影3" class="w-full h-full object-cover"> -->
-                    <span class="text-stone-400 text-xs">📷【照片 3】</span>
-                </div>
+            <div class="text-left pl-3 pt-1">
+                <p class="text-3xl md:text-3xl font-serif font-bold text-[#4A3E3D] tracking-widest">
+                    我們結婚了
+                </p>
             </div>
-        </section>
 
-        <!-- 當日流程時序 -->
-        <section class="bg-white rounded-2xl p-6 shadow-sm border border-warmCard text-center space-y-3">
-            <h2 class="text-sm font-bold tracking-widest text-milkTea uppercase">喜宴當日時程</h2>
-            <div class="grid grid-cols-3 divide-x divide-stone-200 text-center pt-2">
-                <div class="px-2">
-                    <p class="text-xs text-stone-500">入席迎賓</p>
-                    <p class="text-base md:text-lg font-bold mt-1 text-cocoa">11:00</p>
-                </div>
-                <div class="px-2">
-                    <p class="text-xs text-stone-500">準時開席</p>
-                    <p class="text-base md:text-lg font-bold mt-1 text-cocoa">12:00</p>
-                </div>
+            <div class="text-left pl-3 pt-1 space-y-1">
+                <p class="text-xl md:text-xl font-serif font-bold text-[#4A3E3D] tracking-wider">
+                    2026 年 11 月 22 日 (星期日)
+                </p>
+                <p class="text-xs text-[#4A3E3D]/80 tracking-wide font-sans">
+                    歲次丙午年 農曆十月十四日 (小雪)
+                </p>
             </div>
-        </section>
+        </div>
 
-        <!-- 雙方主婚人與長輩具名 -->
-        <section class="bg-warmCard/60 rounded-2xl p-6 text-center space-y-4 border border-warmCard">
-            <h3 class="text-xs font-semibold tracking-widest text-stone-500 uppercase">雙方主婚人</h3>
-            <div class="grid grid-cols-2 gap-6 text-sm md:text-base">
-                <div class="space-y-1.5">
-                    <p class="text-xs text-milkTea font-bold">新郎主婚人</p>
-                    <p class="font-bold text-cocoa">新郎父親 ＆ 新郎母親</p>
-                </div>
-                <div class="space-y-1.5">
-                    <p class="text-xs text-milkTea font-bold">新娘主婚人</p>
-                    <p class="font-bold text-cocoa">新娘父親 ＆ 新娘母親</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Dress Code 著裝建議 -->
-        <section class="text-center space-y-3 pt-2">
-            <h3 class="text-xs font-bold tracking-widest text-milkTea uppercase">Dress Code 穿搭色彩</h3>
-            <p class="text-xs text-stone-500">誠摯邀請大家穿著溫潤的大地色系，與庭園綠意相互輝映</p>
-            <div class="flex justify-center items-center gap-6 pt-1">
-                <div class="flex items-center gap-2">
-                    <span class="w-4 h-4 rounded-full bg-[#E5DEC9] inline-block border border-stone-300"></span>
-                    <span class="text-xs font-medium">燕麥米色</span>
-                </div>
-                <div class="flex items-center gap-2">
-                    <span class="w-4 h-4 rounded-full bg-[#C9A98C] inline-block border border-stone-300"></span>
-                    <span class="text-xs font-medium">溫柔奶茶</span>
-                </div>
-                <div class="flex items-center gap-2">
-                    <span class="w-4 h-4 rounded-full bg-[#4A3E3D] inline-block border border-stone-300"></span>
-                    <span class="text-xs font-medium">可可棕色</span>
-                </div>
-            </div>
-        </section>
-
+        <!-- 求婚線條圖檔 -->
+        <div class="pointer-events-none select-none relative w-full flex justify-end mt-10">
+            <img
+                    src="求婚_去背.png"
+                    alt="求婚對戒插畫"
+                    class="filter-milk-tea w-[78%] max-w-[380px] object-contain translate-x-3"
+            />
+        </div>
     </div>
 
-    <!-- 列印分頁標記：匯出 PDF 時從這裡切換至第二頁 -->
-    <div class="print-page-break"></div>
+    <!-- 雙方主婚人 -->
+    <section id="parentsSection"
+             class="relative bg-warmCard/65 rounded-2xl p-4 md:p-6 text-center space-y-4 border border-warmCard overflow-hidden">
 
-    <!-- ==================== 第二頁：場地、交通與重要提醒 ==================== -->
+        <!-- 標題 -->
+        <h3 class="text-xl font-bold tracking-widest text-cocoa relative z-10">雙方主婚人</h3>
+
+        <!-- 左右雙欄容器：強制手機與電腦皆維持左右並排，間距設為極小 (gap-1) -->
+        <div class="grid grid-cols-2 gap-1 relative z-10">
+
+            <!-- 左側：新郎主婚人卡片 -->
+            <div id="leftCard"
+                 class="bg-white/90 backdrop-blur-sm p-0 rounded-xl relative overflow-hidden transition-transform duration-75 ease-out">
+                <!-- 左半邊喜字圖檔背景水印 -->
+                <div class="absolute inset-y-0 right-0 flex items-center justify-end pointer-events-none select-none opacity-15 pr-1.5">
+                    <img src="左邊囍.png" alt="左半喜字" class="h-24 sm:h-28 object-contain transform translate-x-2">
+                </div>
+                <!-- 名單內容 -->
+                <div class="relative z-10 space-y-2 text-center p-3">
+                    <p class="text-base font-bold text-[#B85B56] tracking-wider">新郎主婚人</p>
+                    <div class="ml-0 space-y-1 text-stone-700 text-base font-normal w-fit">
+                        <div class="grid grid-cols-[3.2rem_1fr] text-left">
+                            <span class="text-stone-500">祖母</span>
+                            <span>陳罔市</span>
+                        </div>
+                        <div class="grid grid-cols-[3.2rem_1fr] text-left">
+                            <span class="text-stone-500">外祖母</span>
+                            <span>余阿娥</span>
+                        </div>
+                        <div class="grid grid-cols-[3.2rem_1fr] text-left">
+                            <span class="text-stone-500">父親</span>
+                            <span>詹進義</span>
+                        </div>
+                        <div class="grid grid-cols-[3.2rem_1fr] text-left">
+                            <span class="text-stone-500">母親</span>
+                            <span>張美雲</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右側：新娘主婚人卡片 -->
+            <div id="rightCard"
+                 class="bg-white/90 backdrop-blur-sm p-0 rounded-xl relative overflow-hidden transition-transform duration-75 ease-out">
+                <!-- 右半邊喜字圖檔背景水印 -->
+                <div class="absolute inset-y-0 left-0 flex items-center justify-start pointer-events-none select-none opacity-15 pl-1.5">
+                    <img src="右邊囍.png" alt="右半喜字" class="h-24 sm:h-28 object-contain transform -translate-x-2">
+                </div>
+                <!-- 名單內容 -->
+                <div class="relative z-10 space-y-2 text-center p-3">
+                    <p class="text-base font-bold text-[#B85B56] tracking-wider">新娘主婚人</p>
+                    <div class="mr-0 space-y-1 text-stone-700 text-base font-normal w-fit ml-auto">
+                        <div class="grid grid-cols-[3.2rem_1fr] text-left">
+                            <span class="text-stone-500">外祖父</span>
+                            <span>余冬生</span>
+                        </div>
+                        <div class="grid grid-cols-[3.2rem_1fr] text-left">
+                            <span class="text-stone-500">外祖母</span>
+                            <span>余陳秀安</span>
+                        </div>
+                        <div class="grid grid-cols-[3.2rem_1fr] text-left">
+                            <span class="text-stone-500">父親</span>
+                            <span>金宜慶</span>
+                        </div>
+                        <div class="grid grid-cols-[3.2rem_1fr] text-left">
+                            <span class="text-stone-500">母親</span>
+                            <span>余小玲</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 當日流程時序 -->
+    <section class="bg-white rounded-2xl p-6 shadow-sm border border-warmCard text-center space-y-3">
+        <h2 class="text-xl font-bold tracking-widest text-milkTea uppercase">宴席地點</h2>
+        <p class="text-base md:text-lg font-bold mt-1 text-cocoa">成美文化園 松柏軒景觀餐廳</p>
+        <p class="text-sm text-[#4A3E3D]/80 tracking-wide font-sans">彰化縣永靖鄉港西村中山路二段86號</p>
+        <!-- 間隔元素：雙向漸層細線 + 菱形符號 -->
+        <div class="flex items-center justify-center gap-3 py-2 select-none">
+            <div class="w-16 h-[1px] bg-gradient-to-r from-transparent to-milkTea/60"></div>
+            <div class="w-1.5 h-1.5 rotate-45 bg-milkTea/80"></div>
+            <div class="w-16 h-[1px] bg-gradient-to-l from-transparent to-milkTea/60"></div>
+        </div>
+        <h2 class="text-xl font-bold tracking-widest text-milkTea uppercase">宴席時程</h2>
+        <div class="grid grid-cols-2 divide-x divide-stone-200 text-center pt-2">
+            <div class="px-2">
+                <p class="text-base text-stone-500">入席迎賓</p>
+                <p class="text-lg md:text-lg font-bold mt-1 text-cocoa">11:00</p>
+            </div>
+            <div class="px-2">
+                <p class="text-base text-stone-500">準時開席</p>
+                <p class="text-lg md:text-lg font-bold mt-1 text-cocoa">12:00</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 5 張照片 3D 無限輪播展示區（零疊影嚴格版） ==================== -->
+    <section class="relative w-full overflow-hidden select-none" id="carouselContainer">
+        <!-- 輪播舞台容器：緊湊包覆卡片高度 -->
+        <div class="relative w-full h-[385px] sm:h-[440px] flex items-center justify-center">
+
+            <!-- 照片 1 -->
+            <div class="carousel-item absolute w-[72%] sm:w-[60%] max-w-[320px] aspect-[3/4] p-2 bg-[#F4ECE4]/95 rounded-[2.2rem] shadow-lg border border-stone-200/60 cursor-pointer overflow-hidden">
+                <img src="C-001.webp" alt="婚紗照 1" class="w-full h-full object-cover rounded-[1.7rem]">
+            </div>
+
+            <!-- 照片 2 -->
+            <div class="carousel-item absolute w-[72%] sm:w-[60%] max-w-[320px] aspect-[3/4] p-2 bg-[#F4ECE4]/95 rounded-[2.2rem] shadow-lg border border-stone-200/60 cursor-pointer overflow-hidden">
+                <img src="C-002.webp" alt="婚紗照 2" class="w-full h-full object-cover rounded-[1.7rem]">
+            </div>
+
+            <!-- 照片 3 -->
+            <div class="carousel-item absolute w-[72%] sm:w-[60%] max-w-[320px] aspect-[3/4] p-2 bg-[#F4ECE4]/95 rounded-[2.2rem] shadow-lg border border-stone-200/60 cursor-pointer overflow-hidden">
+                <img src="C-003.webp" alt="婚紗照 3" class="w-full h-full object-cover rounded-[1.7rem]">
+            </div>
+
+            <!-- 照片 4 -->
+            <div class="carousel-item absolute w-[72%] sm:w-[60%] max-w-[320px] aspect-[3/4] p-2 bg-[#F4ECE4]/95 rounded-[2.2rem] shadow-lg border border-stone-200/60 cursor-pointer overflow-hidden">
+                <img src="C-004.webp" alt="婚紗照 4" class="w-full h-full object-cover rounded-[1.7rem]">
+            </div>
+
+            <!-- 照片 5 -->
+            <div class="carousel-item absolute w-[72%] sm:w-[60%] max-w-[320px] aspect-[3/4] p-2 bg-[#F4ECE4]/95 rounded-[2.2rem] shadow-lg border border-stone-200/60 cursor-pointer overflow-hidden">
+                <img src="C-005.webp" alt="婚紗照 5" class="w-full h-full object-cover rounded-[1.7rem]">
+            </div>
+
+        </div>
+
+        <!-- 正中間下方的左右切換箭頭：緊貼照片底端 -->
+        <div class="flex justify-center items-center gap-10 mt-1">
+            <!-- 左箭頭 -->
+            <button id="prevBtn" type="button" aria-label="上一張照片"
+                    class="p-1 text-[#C9A98C] hover:text-[#4A3E3D] hover:scale-110 active:scale-95 transition-all">
+                <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+                </svg>
+            </button>
+
+            <!-- 右箭頭 -->
+            <button id="nextBtn" type="button" aria-label="下一張照片"
+                    class="p-1 text-[#C9A98C] hover:text-[#4A3E3D] hover:scale-110 active:scale-95 transition-all">
+                <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z"/>
+                </svg>
+            </button>
+        </div>
+    </section>
+
+    <!-- ==================== 第二頁：場地, 交通與重要提醒 ==================== -->
     <div class="space-y-8">
 
         <!-- 宴客地點資訊 -->
         <section class="text-center space-y-2">
             <p class="text-xs font-semibold tracking-widest text-milkTea uppercase">Venue & Location</p>
-            <h2 class="text-xl md:text-2xl font-bold text-cocoa">成美文化園 - 松柏軒景觀餐廳</h2>
+            <h2 class="text-xl md:text-2xl font-bold text-cocoa">成美文化園 松柏軒景觀餐廳</h2>
             <p class="text-sm text-stone-600">彰化縣永靖鄉中山路二段 60 號</p>
         </section>
 
@@ -167,8 +408,8 @@
                     <h4 class="font-bold text-cocoa">自行開車與路線導航</h4>
                 </div>
                 <p class="text-stone-600 leading-relaxed">
-                    • <b>南下</b>：國道 1 號或 3 號接台 76 線快速道路 → 埔心交流道下 → 轉台 1 線抵達。<br>
-                    • <b>北上</b>：國道 1 號經北斗交流道下 → 沿 150 縣道轉台 1 線抵達。
+                    <b>南下</b>：國道 1 號或 3 號接台 76 線快速道路 → 埔心交流道下 → 轉台 1 線抵達。<br>
+                    <b>北上</b>：國道 1 號經北斗交流道下 → 沿 150 縣道轉台 1 線抵達。
                 </p>
                 <div class="mt-2 p-3 bg-warmCard/50 rounded-xl border border-warmCard text-stone-700">
                     <p class="font-bold text-amber-900">⚠️ 停車登記提醒：</p>
@@ -185,15 +426,85 @@
                     <h4 class="font-bold text-cocoa">高鐵 / 台鐵轉乘指引</h4>
                 </div>
                 <p class="text-stone-600 leading-relaxed">
-                    • <b>高鐵彰化站</b>：出站後轉乘「7 號快捷公車」至「永靖站」下車，步行約 5 分鐘抵達。<br>
-                    • <b>台鐵員林站</b>：步行至員林轉運站，轉乘「7 號快捷公車」或客運至「永靖站」下車。
+                    <b>高鐵彰化站</b>：出站後轉乘「7 號快捷公車」至「永靖站」下車，步行約 5 分鐘抵達。<br>
+                    <b>台鐵員林站</b>：步行至員林轉運站，轉乘「7 號快捷公車」或客運至「永靖站」下車。
                 </p>
             </div>
 
         </section>
 
+        <!-- ==================== Dress Code 著裝色彩建議（預渲染零閃爍 10 幀堆疊） ==================== -->
+        <section id="dressCodeSection"
+                 class="bg-white rounded-2xl p-6 shadow-sm border border-warmCard text-center space-y-6 overflow-hidden">
+            <div class="space-y-1">
+                <h2 class="text-xl font-bold tracking-widest text-milkTea uppercase">Dress Code 穿搭色彩</h2>
+                <p class="text-xs text-stone-500">誠摯邀請大家穿著溫潤的大地色系，與庭園綠意相互輝映</p>
+            </div>
+
+            <!-- 三種色彩展示區：平均分配在左中右 (justify-around) -->
+            <div class="flex justify-around items-center pt-2">
+
+                <!-- 顏色 1：燕麥米色 (#E1D4C6) -->
+                <div class="flex flex-col items-center space-y-2">
+                    <span class="text-xs md:text-sm font-bold text-cocoa">燕麥米色</span>
+                    <div class="relative w-28 h-20 flex justify-center items-center">
+                        <div class="crayon-group relative w-28 h-20 rounded-md overflow-hidden" data-color="#E1D4C6">
+                            <div class="crayon-frame-layer bg-[#E1D4C6] mask-f1 active-frame"></div>
+                            <div class="crayon-frame-layer bg-[#E1D4C6] mask-f2"></div>
+                            <div class="crayon-frame-layer bg-[#E1D4C6] mask-f3"></div>
+                            <div class="crayon-frame-layer bg-[#E1D4C6] mask-f4"></div>
+                            <div class="crayon-frame-layer bg-[#E1D4C6] mask-f5"></div>
+                            <div class="crayon-frame-layer bg-[#E1D4C6] mask-f6"></div>
+                            <div class="crayon-frame-layer bg-[#E1D4C6] mask-f7"></div>
+                            <div class="crayon-frame-layer bg-[#E1D4C6] mask-f8"></div>
+                            <div class="crayon-frame-layer bg-[#E1D4C6] mask-f9"></div>
+                            <div class="crayon-frame-layer bg-[#E1D4C6] mask-f10"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 顏色 2：溫柔奶茶 (#E4CFBB) -->
+                <div class="flex flex-col items-center space-y-2">
+                    <span class="text-xs md:text-sm font-bold text-cocoa">溫柔奶茶</span>
+                    <div class="relative w-28 h-20 flex justify-center items-center">
+                        <div class="crayon-group relative w-28 h-20 rounded-md overflow-hidden" data-color="#E4CFBB">
+                            <div class="crayon-frame-layer bg-[#E4CFBB] mask-f1 active-frame"></div>
+                            <div class="crayon-frame-layer bg-[#E4CFBB] mask-f2"></div>
+                            <div class="crayon-frame-layer bg-[#E4CFBB] mask-f3"></div>
+                            <div class="crayon-frame-layer bg-[#E4CFBB] mask-f4"></div>
+                            <div class="crayon-frame-layer bg-[#E4CFBB] mask-f5"></div>
+                            <div class="crayon-frame-layer bg-[#E4CFBB] mask-f6"></div>
+                            <div class="crayon-frame-layer bg-[#E4CFBB] mask-f7"></div>
+                            <div class="crayon-frame-layer bg-[#E4CFBB] mask-f8"></div>
+                            <div class="crayon-frame-layer bg-[#E4CFBB] mask-f9"></div>
+                            <div class="crayon-frame-layer bg-[#E4CFBB] mask-f10"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 顏色 3：可可棕色 (#724C2F) -->
+                <div class="flex flex-col items-center space-y-2">
+                    <span class="text-xs md:text-sm font-bold text-cocoa">可可棕色</span>
+                    <div class="relative w-28 h-20 flex justify-center items-center">
+                        <div class="crayon-group relative w-28 h-20 rounded-md overflow-hidden" data-color="#724C2F">
+                            <div class="crayon-frame-layer bg-[#724C2F] mask-f1 active-frame"></div>
+                            <div class="crayon-frame-layer bg-[#724C2F] mask-f2"></div>
+                            <div class="crayon-frame-layer bg-[#724C2F] mask-f3"></div>
+                            <div class="crayon-frame-layer bg-[#724C2F] mask-f4"></div>
+                            <div class="crayon-frame-layer bg-[#724C2F] mask-f5"></div>
+                            <div class="crayon-frame-layer bg-[#724C2F] mask-f6"></div>
+                            <div class="crayon-frame-layer bg-[#724C2F] mask-f7"></div>
+                            <div class="crayon-frame-layer bg-[#724C2F] mask-f8"></div>
+                            <div class="crayon-frame-layer bg-[#724C2F] mask-f9"></div>
+                            <div class="crayon-frame-layer bg-[#724C2F] mask-f10"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
         <!-- ==================== 互動回填表單（網頁顯示，列印自動隱藏） ==================== -->
-        <!-- 隱藏 iframe 用於無跳轉提交 -->
         <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"
                 onload="if(submitted) { showThankYou(); }"></iframe>
 
@@ -203,11 +514,9 @@
                 <p class="text-xs text-stone-500">感謝您的祝福，請撥冗填寫以利我們提前為您安排停車與園區門票</p>
             </div>
 
-            <!-- 修正後的 action 網址 -->
             <form
                     id="rsvpForm"
                     action="https://docs.google.com/forms/d/e/1FAIpQLScpgHrolTHe31IcxNL-ZtqoyU79mOqyEIXAXDmjx2DYd_9eqw/formResponse"
-
                     method="POST"
                     target="hidden_iframe"
                     onsubmit="submitted=true;"
@@ -242,7 +551,7 @@
                 <div id="familySection" class="hidden p-4 bg-warmCard/30 rounded-xl border border-warmCard space-y-3">
                     <div>
                         <label class="block font-semibold mb-1 text-cocoa">同行總出席人數（含您本人） <span
-                                class="text-red-500">*</span></label>
+                            class="text-red-500">*</span></label>
                         <select id="guestCountSelect" name="entry.1188546797"
                                 class="w-full px-3.5 py-2 border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-milkTea bg-white">
                             <option value="2 位">2 位</option>
@@ -303,7 +612,6 @@
                         成美文化園庭園景致怡人，入園需憑券。我們將為貴賓提前備妥票券。</p>
                     <select name="entry.228889561"
                             class="w-full px-3.5 py-2.5 border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-milkTea bg-warmCard/20">
-                        <!-- 注意：此處 value 必須與你的 Google 表單選項字串 100% 相同 -->
                         <option value="需要，預計入園漫遊（依出席總人數備票）">是，預計順道入園漫遊（依出席總人數為您備票）
                         </option>
                         <option value="不需要，僅參加喜宴">否，僅參加喜宴</option>
@@ -318,17 +626,254 @@
             </form>
         </section>
 
-        <!-- 動態切換、localStorage 自動調閱與按鈕狀態更新腳本 -->
+        <!-- 輪播控制與表單資料調閱腳本 -->
         <script>
+          // ==================== 開場控制與音樂觸發邏輯 ====================
+          const introOverlay = document.getElementById('introOverlay');
+          const introVideo = document.getElementById('introVideo');
+          const skipIntroBtn = document.getElementById('skipIntroBtn');
+          const btnText = document.getElementById('btnText');
+          const bgMusic = document.getElementById('bgMusic');
+          const musicToggleBtn = document.getElementById('musicToggleBtn');
+          const musicPlayingIcon = document.getElementById('musicPlayingIcon');
+          const musicMutedIcon = document.getElementById('musicMutedIcon');
+          const musicText = document.getElementById('musicText');
+
+          let isIntroClosed = false;
+
+          // 啟動背景音樂（由使用者點擊行為解鎖，100% 成功播放）
+          function playBackgroundMusic() {
+            if (!bgMusic) return;
+            bgMusic.play().then(() => {
+              updateMusicUI(true);
+            }).catch(err => {
+              console.log('音樂播放提示:', err);
+            });
+          }
+
+          function updateMusicUI(playing) {
+            if (playing) {
+              musicPlayingIcon.classList.remove('hidden');
+              musicMutedIcon.classList.add('hidden');
+              musicText.innerText = 'BGM';
+              musicToggleBtn.classList.remove('opacity-60');
+            } else {
+              musicPlayingIcon.classList.add('hidden');
+              musicMutedIcon.classList.remove('hidden');
+              musicText.innerText = 'OFF';
+              musicToggleBtn.classList.add('opacity-60');
+            }
+          }
+
+          // 頂部導覽列音樂開關按鈕
+          if (musicToggleBtn && bgMusic) {
+            musicToggleBtn.addEventListener('click', () => {
+              if (bgMusic.paused) {
+                bgMusic.play().then(() => updateMusicUI(true));
+              } else {
+                bgMusic.pause();
+                updateMusicUI(false);
+              }
+            });
+          }
+
+          // 影片播放結束：停在最後一幀，按鈕變大、發光提示點擊
+          if (introVideo) {
+            introVideo.addEventListener('ended', () => {
+              // 確保停在最後一幀畫面
+              introVideo.pause();
+
+              if (skipIntroBtn && btnText) {
+                btnText.innerHTML = '點擊進入邀請函 ❯';
+                // 替換樣式為明顯的奶茶色高光卡片並啟動呼吸動效
+                skipIntroBtn.className = 'px-7 py-3 rounded-full bg-[#F4ECE4] text-[#4A3E3D] font-bold text-sm tracking-widest shadow-xl cursor-pointer animate-enter-pulse border border-white/60 transition-all duration-300';
+              }
+            });
+
+            // 支援手機點擊影片區域也可啟動播放（防阻擋）
+            introOverlay.addEventListener('click', (e) => {
+              if (e.target !== skipIntroBtn && introVideo.paused && !introVideo.ended) {
+                introVideo.play().catch(err => console.log(err));
+              }
+            });
+          }
+
+          // 使用者點擊按鈕（無論是提早 SKIP 或是看完點擊進入）
+          function dismissIntro() {
+            if (isIntroClosed || !introOverlay) return;
+            isIntroClosed = true;
+
+            // 1. 瞬間校正到首頁最頂部
+            window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+
+            // 2. 利用使用者明確點擊事件，立即順暢啟動音樂
+            playBackgroundMusic();
+
+            // 3. 淡出並移除開場層
+            introOverlay.style.opacity = '0';
+            introOverlay.style.pointerEvents = 'none';
+
+            setTimeout(() => {
+              introOverlay.remove();
+              handleXiScrollAnimation();
+              handleDressCodeAnimation();
+            }, 700);
+          }
+
+          if (skipIntroBtn) {
+            skipIntroBtn.addEventListener('click', (e) => {
+              e.stopPropagation();
+              dismissIntro();
+            });
+          }
+
+          // ==================== 3D 無限輪播 + 拉霸機滾動特效 ====================
+          const carouselContainer = document.getElementById('carouselContainer');
+          const items = Array.from(document.querySelectorAll('.carousel-item'));
+          let currentIndex = 0;
+          const totalItems = items.length;
+
+          let slotAnimationTimer = null;
+          let isSlotPlaying = false;
+
+          let isSlotAllowedByParents = false;
+
+          function updateCarousel(isFast = false) {
+            items.forEach((item, index) => {
+              item.style.transition = isFast
+                ? 'transform 0.08s linear, opacity 0.08s linear'
+                : 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease, filter 0.3s ease';
+
+              let diff = (index - currentIndex + totalItems) % totalItems;
+              if (diff > totalItems / 2) diff -= totalItems;
+
+              if (diff === 0) {
+                item.style.visibility = 'visible';
+                item.style.transform = 'translateX(0) scale(1)';
+                item.style.opacity = '1';
+                item.style.zIndex = '30';
+                item.style.filter = 'none';
+                item.style.pointerEvents = 'auto';
+              } else if (diff === 1) {
+                item.style.visibility = 'visible';
+                item.style.transform = 'translateX(52%) scale(0.82)';
+                item.style.opacity = '0.75';
+                item.style.zIndex = '20';
+                item.style.filter = 'brightness(0.96)';
+                item.style.pointerEvents = 'auto';
+              } else if (diff === -1) {
+                item.style.visibility = 'visible';
+                item.style.transform = 'translateX(-52%) scale(0.82)';
+                item.style.opacity = '0.75';
+                item.style.zIndex = '20';
+                item.style.filter = 'brightness(0.96)';
+                item.style.pointerEvents = 'auto';
+              } else {
+                item.style.visibility = 'hidden';
+                item.style.transform = diff > 0 ? 'translateX(70%) scale(0.6)' : 'translateX(-70%) scale(0.6)';
+                item.style.opacity = '0';
+                item.style.zIndex = '0';
+                item.style.pointerEvents = 'none';
+              }
+            });
+          }
+
+          function stopSlotAnimation() {
+            if (slotAnimationTimer) {
+              clearTimeout(slotAnimationTimer);
+              slotAnimationTimer = null;
+            }
+            isSlotPlaying = false;
+          }
+
+          function runSlotMachineAnimation() {
+            stopSlotAnimation();
+            isSlotPlaying = true;
+
+            const stepDelays = [100, 90, 80, 70, 60, 70, 80, 90, 100, 100];
+            const stepsCount = stepDelays.length;
+
+            let currentStep = 0;
+            const targetIndex = 0;
+
+            currentIndex = (targetIndex - (stepsCount % totalItems) + totalItems) % totalItems;
+            updateCarousel(true);
+
+            function nextStep() {
+              if (!isSlotPlaying) return;
+
+              currentStep++;
+              currentIndex = (currentIndex + 1) % totalItems;
+
+              const isLastStep = (currentStep >= stepsCount);
+              updateCarousel(!isLastStep);
+
+              if (!isLastStep) {
+                slotAnimationTimer = setTimeout(nextStep, stepDelays[currentStep]);
+              } else {
+                isSlotPlaying = false;
+                slotAnimationTimer = null;
+              }
+            }
+
+            slotAnimationTimer = setTimeout(nextStep, stepDelays[0]);
+          }
+
+          function prevSlide() {
+            stopSlotAnimation();
+            currentIndex = (currentIndex - 1 + totalItems) % totalItems;
+            updateCarousel(false);
+          }
+
+          function nextSlide() {
+            stopSlotAnimation();
+            currentIndex = (currentIndex + 1) % totalItems;
+            updateCarousel(false);
+          }
+
+          document.getElementById('prevBtn').addEventListener('click', prevSlide);
+          document.getElementById('nextBtn').addEventListener('click', nextSlide);
+
+          items.forEach((item, index) => {
+            item.addEventListener('click', () => {
+              stopSlotAnimation();
+              if (index !== currentIndex) {
+                currentIndex = index;
+                updateCarousel(false);
+              }
+            });
+          });
+
+          const observerOptions = {
+            root: null,
+            rootMargin: '-35% 0px -35% 0px',
+            threshold: 0
+          };
+
+          const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                if (isSlotAllowedByParents) {
+                  runSlotMachineAnimation();
+                  isSlotAllowedByParents = false;
+                }
+              }
+            });
+          }, observerOptions);
+
+          if (carouselContainer) {
+            observer.observe(carouselContainer);
+          }
+          updateCarousel(false);
+
+          // ==================== 表單互動與 LocalStorage 控制 ====================
           let submitted = false;
           const STORAGE_KEY = 'wedding_rsvp_data';
 
-          // 頁面載入時觸發：自動檢查並調閱先前的登記紀錄
           window.addEventListener('DOMContentLoaded', () => {
             loadSavedData();
           });
 
-          // 控制家庭/團體同行區塊的展開與收合
           function toggleFamilyGroup(isFamily) {
             const familySection = document.getElementById('familySection');
             const guestSelect = document.getElementById('guestCountSelect');
@@ -341,7 +886,6 @@
             }
           }
 
-          // 控制車牌號碼輸入框的展開與必填狀態
           function toggleCarInput(isDriving) {
             const carSection = document.getElementById('carSection');
             const carInput = document.getElementById('carPlateInput');
@@ -355,11 +899,8 @@
             }
           }
 
-          // 自動調閱 localStorage 資料並切換按鈕文字
           function loadSavedData() {
             const saved = localStorage.getItem(STORAGE_KEY);
-
-            // 如果是全新訪客（從未送出過）
             if (!saved) {
               toggleFamilyGroup(false);
               toggleCarInput(false);
@@ -368,12 +909,9 @@
 
             try {
               const data = JSON.parse(saved);
-
-              // 1. 回填聯絡人姓名
               const nameInput = document.querySelector('input[name="entry.448957124"]');
               if (nameInput && data.name) nameInput.value = data.name;
 
-              // 2. 回填出席代表形式
               const repRadios = document.querySelectorAll('input[name="entry.1227706663"]');
               repRadios.forEach(r => {
                 if (r.value === data.repType) r.checked = true;
@@ -383,7 +921,6 @@
               if (isFamily && data.guestCount) document.getElementById('guestCountSelect').value = data.guestCount;
               if (isFamily && data.members) document.querySelector('input[name="entry.1239814391"]').value = data.members;
 
-              // 3. 回填交通方式
               const transRadios = document.querySelectorAll('input[name="entry.1574191851"]');
               transRadios.forEach(r => {
                 if (r.value === data.transport) r.checked = true;
@@ -392,26 +929,21 @@
               toggleCarInput(isDriving);
               if (isDriving && data.carPlate) document.getElementById('carPlateInput').value = data.carPlate;
 
-              // 4. 回填遊園門票索取意願
               const parkSelect = document.querySelector('select[name="entry.228889561"]');
               if (parkSelect && data.park) parkSelect.value = data.park;
 
-              // 5. 動態修改按鈕狀態為「更新資料」
               const btn = document.getElementById('submit-btn');
               if (btn) {
                 btn.innerText = '更新登記資料（已載入上次紀錄）';
                 btn.classList.remove('bg-milkTea');
-                btn.classList.add('bg-cocoa'); // 換成沉穩的可可深色，強調是修改/更新模式
+                btn.classList.add('bg-cocoa');
               }
-
             } catch (err) {
               console.error('調閱歷史資料時發生異常：', err);
             }
           }
 
-          // 表單成功送出後：更新 localStorage 儲存內容並彈出回饋
           function showThankYou() {
-            // 收集當前填寫的最新內容
             const currentData = {
               name: document.querySelector('input[name="entry.448957124"]')?.value || '',
               repType: document.querySelector('input[name="entry.1227706663"]:checked')?.value || '',
@@ -423,12 +955,9 @@
               updatedAt: new Date().toISOString()
             };
 
-            // 存入賓客瀏覽器本地
             localStorage.setItem(STORAGE_KEY, JSON.stringify(currentData));
-
             alert('登記資料已成功送出！若後續行程或車牌有變動，再次開啟此頁面即可隨時修改。');
 
-            // 送出後按鈕提示完成，依然允許再次修改
             const btn = document.getElementById('submit-btn');
             if (btn) {
               btn.innerText = '✓ 資料已更新完成';
@@ -437,6 +966,96 @@
             }
           }
 
+          // ==================== 雙方主婚人左右卡片滾動靠攏動畫與頂部觸發機制 ====================
+          const parentsSection = document.getElementById('parentsSection');
+          const leftCard = document.getElementById('leftCard');
+          const rightCard = document.getElementById('rightCard');
+
+          function handleXiScrollAnimation() {
+            if (!parentsSection || !leftCard || !rightCard) return;
+
+            const rect = parentsSection.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+            const scrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
+
+            let rawProgress = (windowHeight - rect.top) / (windowHeight + rect.height);
+            const isAtTop = scrollY <= 30;
+
+            if (isAtTop || rawProgress <= 0) {
+              isSlotAllowedByParents = true;
+            }
+
+            let progress = isAtTop ? 0 : Math.max(0, Math.min(1, rawProgress));
+
+            let translateXValue = 0;
+            if (progress < 0.5) {
+              translateXValue = (0.5 - progress) * 280;
+            } else {
+              translateXValue = 0;
+            }
+
+            leftCard.style.transform = `translateX(-${translateXValue}px)`;
+            rightCard.style.transform = `translateX(${translateXValue}px)`;
+          }
+
+          // ==================== Dress Code 預渲染 10 幀堆疊零閃爍動畫 ====================
+          const dressCodeSection = document.getElementById('dressCodeSection');
+          const TOTAL_CRAYON_FRAMES = 10;
+          const crayonGroups = document.querySelectorAll('.crayon-group');
+          let lastFrameIndex = 0;
+
+          function handleDressCodeAnimation() {
+            if (!dressCodeSection || crayonGroups.length === 0) return;
+
+            const rect = dressCodeSection.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+
+            const sectionCenter = rect.top + (rect.height / 2);
+            const viewportCenter = windowHeight / 2;
+
+            const startY = windowHeight;
+            const endY = viewportCenter;
+            const totalTravel = startY - endY;
+            const currentTravel = startY - sectionCenter;
+
+            let progress = currentTravel / totalTravel;
+            progress = Math.max(0, Math.min(1, progress));
+
+            const frameIndex = Math.min(
+              TOTAL_CRAYON_FRAMES - 1,
+              Math.floor(progress * TOTAL_CRAYON_FRAMES)
+            );
+
+            if (frameIndex !== lastFrameIndex) {
+              lastFrameIndex = frameIndex;
+
+              crayonGroups.forEach(group => {
+                const layers = group.children;
+                for (let i = 0; i < layers.length; i++) {
+                  if (i === frameIndex) {
+                    layers[i].classList.add('active-frame');
+                  } else {
+                    layers[i].classList.remove('active-frame');
+                  }
+                }
+              });
+            }
+          }
+
+          // 統一綁定滾動與畫面改變事件
+          window.addEventListener('scroll', () => {
+            handleXiScrollAnimation();
+            handleDressCodeAnimation();
+          }, { passive: true });
+
+          window.addEventListener('resize', () => {
+            handleXiScrollAnimation();
+            handleDressCodeAnimation();
+          }, { passive: true });
+
+          // 初始化執行
+          handleXiScrollAnimation();
+          handleDressCodeAnimation();
         </script>
     </div>
 
