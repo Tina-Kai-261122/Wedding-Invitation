@@ -374,17 +374,17 @@
                 WEDDING INVITATION
             </p>
 
-            <!-- 名字交錯排版與水平線條（緊湊黃金比例版） -->
+            <!-- 名字交錯排版與水平線條（最佳化比例版） -->
             <div class="py-1 space-y-0">
                 <!-- 新郎姓名（靠左） -->
                 <div class="text-left pl-2">
-                    <span class="text-[clamp(2.5rem,8vw,4.5rem)] font-serif font-bold text-[#4A3E3D] tracking-wider inline-block leading-none">
+                    <span class="text-[clamp(3.2rem,13vw,4.6rem)] font-serif font-bold text-[#4A3E3D] tracking-wider inline-block leading-none">
                         詹博凱
                     </span>
                 </div>
 
-                <!-- 分隔線與 & 符號：極窄垂直間距 -->
-                <div class="flex items-center justify-center gap-4 py-1 md:py-1.5 select-none">
+                <!-- 分隔線與 & 符號：自適應安全垂直間距，避免文字碰觸線條 -->
+                <div class="flex items-center justify-center gap-4 py-1.5 md:py-2 select-none">
                     <div class="flex-1 h-[1px] bg-[#4A3E3D]/40"></div>
                     <span class="text-2xl md:text-3xl font-serif text-[#4A3E3D] px-2 flex-shrink-0 leading-none">
                         &amp;
@@ -394,7 +394,7 @@
 
                 <!-- 新娘姓名（靠右） -->
                 <div class="text-right pr-2">
-                    <span class="text-[clamp(2.5rem,8vw,4.5rem)] font-serif font-bold text-[#4A3E3D] tracking-wider inline-block leading-none">
+                    <span class="text-[clamp(3.2rem,13vw,4.6rem)] font-serif font-bold text-[#4A3E3D] tracking-wider inline-block leading-none">
                         金鈺珣
                     </span>
                 </div>
@@ -1239,7 +1239,7 @@
 
           const observerOptions = {
             root: null,
-            rootMargin: '-35% 0px -35% 0px',
+            rootMargin: '-49% 0px -49% 0px',
             threshold: 0
           };
 
