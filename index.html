@@ -30,6 +30,7 @@
         }
       }
     }
+
     </script>
 
     <style>
@@ -133,50 +134,109 @@
       background-color: #724C2F; /* Cocoa 實心可可色 */
     }
 
-    /* ==================== 精確 4 頁列印優化設定 ==================== */
+    /* ==================== 精確 4 頁列印優化設定（跨裝置修復版） ==================== */
     @media print {
-      .no-print { display: none !important; }
-      body {
+      /* 1. 全域紙張規格鎖定 A4，移除瀏覽器預設頁首頁尾與多餘邊界 */
+      @page {
+        size: A4 portrait;
+        margin: 10mm 8mm; /* 固定留白，避免手機瀏覽器預設過大邊界 */
+      }
+
+      *, *::before, *::after {
+        box-sizing: border-box !important;
+      }
+
+      html, body {
+        width: 100% !important;
         background: #FAF8F5 !important;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
-      }
-      .shadow-sm, .shadow-md, .shadow-lg {
-        box-shadow: none !important;
+        font-size: 13px !important; /* 鎖定基礎字級，避免手機縮放導致排版膨脹 */
       }
 
-      /* 強制分頁類別 */
+      .no-print { display: none !important; }
+      .shadow-sm, .shadow-md, .shadow-lg { box-shadow: none !important; }
+
+      /* 消除外層容器在列印時過大的間距堆疊 */
+      main {
+        max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+      .space-y-12 > :not([hidden]) ~ :not([hidden]) {
+        margin-top: 1rem !important;
+      }
+
+      /* 強制分頁類別：改用現代標準 break-after: page */
       .print-page-break {
         page-break-after: always !important;
         break-after: page !important;
       }
 
-      /* 第二頁容器：垂直居中配置 */
-      .print-page-2-container {
-        min-height: 92vh !important;
-        display: flex !important;
-        flex-direction: column !important;
-        justify-content: center !important;
-        gap: 2rem !important;
+      /* ================= 第一頁：防止第一頁溢出被截斷 ================= */
+      /* 縮減上方標題間距，確保整頁（含主婚人）在 A4 第一頁內完美收納 */
+      #home > div:first-child {
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+      }
+      #home > div:first-child img {
+        max-width: 220px !important; /* 手機列印時縮小插圖，避免把主婚人擠到第二頁 */
+        margin-top: 0.5rem !important;
       }
 
-      /* 第四頁：其他提醒容器微調置中 */
-      #reminders {
-        page-break-before: always !important;
-        break-before: page !important;
-        margin-top: 4rem !important;
+      #parentsSection {
+        margin-top: 0.5rem !important;
+        padding: 0.75rem !important;
       }
-
-      /* ===== 列印狀態凍結與破圖修正 ===== */
-      /* 1. 主婚人卡片強制完美靠攏 */
       #leftCard, #rightCard {
         transform: none !important;
       }
 
-      /* 2. Dress Code：修正奇怪線段！
-         前 9 幀直接 display: none 避免在 PDF 殘留邊緣路徑
-         第 10 幀移除 3D 硬體加速，消除向量採樣線段
-      */
+      /* ================= 第二頁：消滅空白頁的關鍵 ================= */
+      /* 移除 min-height: 92vh（手機產生空白頁的原兇） */
+      .print-page-2-container {
+        min-height: auto !important;
+        display: block !important;
+        gap: 0 !important;
+        margin: 0 !important;
+      }
+
+      /* 宴席時程容器緊湊化 */
+      #venueSection {
+        padding: 1.25rem !important;
+        margin-bottom: 1.5rem !important;
+      }
+
+      /* 輪播區卡片高度固定，並作為第二頁的結尾分頁點 */
+      #carouselContainer {
+        height: auto !important;
+        margin-top: 0 !important;
+        page-break-after: always !important;
+        break-after: page !important;
+      }
+      #carouselContainer > div:first-child {
+        height: 380px !important; /* 鎖定舞台高度，防止內容下溢觸發非預期換頁 */
+      }
+
+      /* ================= 第三頁：交通與著裝色彩 ================= */
+      #directions {
+        margin-top: 0 !important;
+        padding: 1rem !important;
+      }
+      #dressCodeSection {
+        margin-top: 1rem !important;
+        padding: 1rem !important;
+        page-break-after: always !important;
+        break-after: page !important;
+      }
+
+      /* 交通工具停留位置 */
+      #carWrapper { left: auto !important; right: 0 !important; transform: none !important; }
+      #carIcon { transform: scaleX(1) !important; }
+      #trainWrapper { left: 0 !important; right: auto !important; transform: none !important; }
+      #trainIcon { transform: scaleX(-1) !important; }
+
+      /* Dress code 蠟筆第 10 幀凍結 */
       .crayon-frame-layer {
         display: none !important;
         opacity: 0 !important;
@@ -194,25 +254,16 @@
         contain: paint !important;
       }
 
-      /* 3. 汽車與火車強制停留在預設終點 */
-      #carWrapper {
-        left: auto !important;
-        right: 0 !important;
-        transform: none !important;
-      }
-      #carIcon {
-        transform: scaleX(1) !important;
-      }
-
-      #trainWrapper {
-        left: 0 !important;
-        right: auto !important;
-        transform: none !important;
-      }
-      #trainIcon {
-        transform: scaleX(-1) !important;
+      /* ================= 第四頁：其他提醒 ================= */
+      #reminders {
+        page-break-before: always !important;
+        break-before: page !important;
+        page-break-after: avoid !important;
+        break-after: avoid !important;
+        margin-top: 2rem !important;
       }
     }
+
     </style>
 </head>
 <body class="bg-oatmeal text-cocoa font-sans antialiased selection:bg-milkTea selection:text-white">
@@ -506,7 +557,8 @@
     <!-- ==================== 【第二頁】宴席地點 + 照片輪播（加入垂直居中容器） ==================== -->
     <div class="print-page-2-container space-y-12">
         <!-- 當日流程時序 -->
-        <section id="venueSection" class="bg-white rounded-2xl p-6 shadow-sm border border-warmCard text-center space-y-3">
+        <section id="venueSection"
+                 class="bg-white rounded-2xl p-6 shadow-sm border border-warmCard text-center space-y-3">
             <h2 class="text-xl font-bold tracking-widest text-milkTea uppercase">宴席地點</h2>
 
             <!-- 地點名稱 + 複製按鈕 -->
@@ -820,7 +872,8 @@
     <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"
             onload="if(submitted) { showThankYou(); }"></iframe>
 
-    <section id="rsvpSection" class="no-print relative left-1/2 -translate-x-1/2 w-screen bg-[#CEA580] py-10 px-5 text-white">
+    <section id="rsvpSection"
+             class="no-print relative left-1/2 -translate-x-1/2 w-screen bg-[#CEA580] py-10 px-5 text-white">
         <!-- 內部內容限制最大寬度，保持與上方內容一致的工整閱讀視線 -->
         <div class="max-w-xl md:max-w-2xl mx-auto space-y-6">
 
@@ -872,15 +925,15 @@
                                 class="text-[#B85B56]">*</span></label>
                         <select id="guestCountSelect" name="entry.1188546797"
                                 class="w-full px-3.5 py-2 border border-white/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-white bg-white text-stone-800">
-                            <option value="2位">2 位</option>
-                            <option value="3位">3 位</option>
-                            <option value="4位">4 位</option>
-                            <option value="5位">5 位</option>
-                            <option value="6位">6 位</option>
-                            <option value="7位">7 位</option>
-                            <option value="8位">8 位</option>
-                            <option value="9位">9 位</option>
-                            <option value="10位">10 位</option>
+                            <option value="2">2 位</option>
+                            <option value="3">3 位</option>
+                            <option value="4">4 位</option>
+                            <option value="5">5 位</option>
+                            <option value="6">6 位</option>
+                            <option value="7">7 位</option>
+                            <option value="8">8 位</option>
+                            <option value="9">9 位</option>
+                            <option value="10">10 位</option>
                         </select>
                     </div>
                     <div>
@@ -1621,6 +1674,7 @@
 
           // 頁面載入後立即執行一次初始化繪製
           requestUnifiedScrollUpdate();
+
     </script>
 </main>
 </body>
