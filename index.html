@@ -38,6 +38,11 @@
       filter: invert(74%) sepia(19%) saturate(630%) hue-rotate(346deg) brightness(90%) contrast(88%);
     }
 
+    /* 將黑線圖檔精準轉換為 #724C2F 可可深棕色的 CSS Filter */
+    .filter-cocoa {
+      filter: invert(30%) sepia(28%) saturate(1350%) hue-rotate(345deg) brightness(92%) contrast(90%);
+    }
+
     /* 3D 輪播卡片平滑過渡動效 */
     .carousel-item {
       transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease, filter 0.3s ease;
@@ -96,6 +101,34 @@
       animation: enterPulse 1.8s ease-in-out infinite;
     }
 
+    /* 自訂 Radio 圓鈕：選中時外圈純白底，中央呈現清晰的 Cocoa 深棕色 (#724C2F) 實心圓點 */
+    .custom-radio {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 1.15rem;
+      height: 1.15rem;
+      border: 2px solid rgba(255, 255, 255, 0.7);
+      border-radius: 50%;
+      background-color: transparent;
+      display: grid;
+      place-content: center;
+      margin: 0;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+    .custom-radio:checked {
+      background-color: #FFFFFF;
+      border-color: #FFFFFF;
+    }
+    .custom-radio:checked::before {
+      content: "";
+      width: 0.55rem;
+      height: 0.55rem;
+      border-radius: 50%;
+      background-color: #724C2F; /* Cocoa 實心可可色 */
+    }
+
     /* 列印專屬優化設定（另存 PDF 時觸發） */
     @media print {
       .no-print { display: none !important; }
@@ -117,10 +150,12 @@
 <body class="bg-oatmeal text-cocoa font-sans antialiased selection:bg-milkTea selection:text-white">
 
 <!-- 背景音樂標籤 -->
-<audio id="bgMusic" src="Music_2.mp3" loop preload="auto"></audio>
+<audio id="bgMusic" src="Music_4.mp3" loop preload="auto"></audio>
 
 <!-- ==================== 開場全螢幕動畫覆蓋層（黑底影片+mix-blend-screen零色差） ==================== -->
-<div id="introOverlay" class="no-print fixed inset-0 z-[100] bg-[#CEA580] flex flex-col items-center justify-center p-4 transition-opacity duration-700 select-none" style="isolation: isolate;">
+<div id="introOverlay"
+     class="no-print fixed inset-0 z-[100] bg-[#CEA580] flex flex-col items-center justify-center p-4 transition-opacity duration-700 select-none"
+     style="isolation: isolate;">
 
     <!-- 影片包覆區：左右切齊螢幕並置中 -->
     <div class="relative w-full max-w-xl flex flex-col items-center">
@@ -389,129 +424,216 @@
     </section>
 
     <!-- ==================== 第二頁：場地, 交通與重要提醒 ==================== -->
-    <div class="space-y-8">
+    <!-- ==================== 對戒線條圖檔 ＋ 右側配字區 ==================== -->
+    <div class="relative w-full overflow-hidden select-none -mb-6 sm:-mb-8">
+        <!-- 左側對戒圖檔 -->
+        <div class="pointer-events-none w-[90%] sm:w-[90%] max-w-[400px] -translate-x-14 sm:-translate-x-12">
+            <img
+                    src="鑽石去背.png"
+                    alt="對戒插畫"
+                    class="filter-milk-tea w-full h-auto object-contain block"
+            />
+        </div>
 
-        <!-- 宴客地點資訊 -->
-        <section class="text-center space-y-2">
-            <p class="text-xs font-semibold tracking-widest text-milkTea uppercase">Venue & Location</p>
-            <h2 class="text-xl md:text-2xl font-bold text-cocoa">成美文化園 松柏軒景觀餐廳</h2>
-            <p class="text-sm text-stone-600">彰化縣永靖鄉中山路二段 60 號</p>
-        </section>
+        <!-- 右側配字區（定位在圖片右半部的空白處） -->
+        <div class="absolute right-2 sm:right-4 bottom-6 sm:bottom-8 text-right space-y-1 select-text">
+            <p class="text-[11px] sm:text-xs text-milkTea font-sans tracking-wider">
+                DIRECTIONS &amp; REMINDERS
+            </p>
+        </div>
+    </div>
 
-        <!-- 交通指引卡片清單 -->
-        <section class="space-y-3.5 text-xs md:text-sm">
+    <!-- ==================== 交通資訊（利用 -mt-4/-mt-6 向上緊縮間距） ==================== -->
+    <section id="directions"
+             style="margin-top: -15px !important;"
+             class="relative z-10 bg-warmCard/40 rounded-2xl p-5 md:p-7 text-center space-y-6 border border-warmCard overflow-hidden">
 
-            <!-- 自駕與停車卡片 -->
-            <div class="bg-white p-5 rounded-2xl shadow-sm border border-warmCard space-y-2">
-                <div class="flex items-center gap-2">
-                    <span class="text-base">🚗</span>
-                    <h4 class="font-bold text-cocoa">自行開車與路線導航</h4>
-                </div>
-                <p class="text-stone-600 leading-relaxed">
-                    <b>南下</b>：國道 1 號或 3 號接台 76 線快速道路 → 埔心交流道下 → 轉台 1 線抵達。<br>
-                    <b>北上</b>：國道 1 號經北斗交流道下 → 沿 150 縣道轉台 1 線抵達。
-                </p>
-                <div class="mt-2 p-3 bg-warmCard/50 rounded-xl border border-warmCard text-stone-700">
-                    <p class="font-bold text-amber-900">⚠️ 停車登記提醒：</p>
-                    <p class="text-xs leading-relaxed mt-0.5">
-                        園區設有專屬停車場。離場需折抵車牌，為簡化當天作業，建議開車前來的貴賓<b>預先於下方表單提供車牌</b>，或於當天迎賓接待處登記。
-                    </p>
-                </div>
-            </div>
+        <!-- 標題 -->
+        <h3 class="text-xl font-bold tracking-widest text-cocoa">交通資訊</h3>
 
-            <!-- 大眾運輸卡片 -->
-            <div class="bg-white p-5 rounded-2xl shadow-sm border border-warmCard space-y-2">
-                <div class="flex items-center gap-2">
-                    <span class="text-base">🚄</span>
-                    <h4 class="font-bold text-cocoa">高鐵 / 台鐵轉乘指引</h4>
-                </div>
-                <p class="text-stone-600 leading-relaxed">
-                    <b>高鐵彰化站</b>：出站後轉乘「7 號快捷公車」至「永靖站」下車，步行約 5 分鐘抵達。<br>
-                    <b>台鐵員林站</b>：步行至員林轉運站，轉乘「7 號快捷公車」或客運至「永靖站」下車。
-                </p>
-            </div>
+        <!-- 1. 自行開車區塊 -->
+        <div class="relative space-y-3">
+            <!-- 雙欄排版 -->
+            <div class="inline-block text-left text-[#555555] text-xs sm:text-sm font-sans space-y-2.5 max-w-full">
 
-        </section>
-
-        <!-- ==================== Dress Code 著裝色彩建議（預渲染零閃爍 10 幀堆疊） ==================== -->
-        <section id="dressCodeSection"
-                 class="bg-white rounded-2xl p-6 shadow-sm border border-warmCard text-center space-y-6 overflow-hidden">
-            <div class="space-y-1">
-                <h2 class="text-xl font-bold tracking-widest text-milkTea uppercase">Dress Code 穿搭色彩</h2>
-                <p class="text-xs text-stone-500">誠摯邀請大家穿著溫潤的大地色系，與庭園綠意相互輝映</p>
-            </div>
-
-            <!-- 三種色彩展示區：平均分配在左中右 (justify-around) -->
-            <div class="flex justify-around items-center pt-2">
-
-                <!-- 顏色 1：燕麥米色 (#E1D4C6) -->
-                <div class="flex flex-col items-center space-y-2">
-                    <span class="text-xs md:text-sm font-bold text-cocoa">燕麥米色</span>
-                    <div class="relative w-28 h-20 flex justify-center items-center">
-                        <div class="crayon-group relative w-28 h-20 rounded-md overflow-hidden" data-color="#E1D4C6">
-                            <div class="crayon-frame-layer bg-[#E1D4C6] mask-f1 active-frame"></div>
-                            <div class="crayon-frame-layer bg-[#E1D4C6] mask-f2"></div>
-                            <div class="crayon-frame-layer bg-[#E1D4C6] mask-f3"></div>
-                            <div class="crayon-frame-layer bg-[#E1D4C6] mask-f4"></div>
-                            <div class="crayon-frame-layer bg-[#E1D4C6] mask-f5"></div>
-                            <div class="crayon-frame-layer bg-[#E1D4C6] mask-f6"></div>
-                            <div class="crayon-frame-layer bg-[#E1D4C6] mask-f7"></div>
-                            <div class="crayon-frame-layer bg-[#E1D4C6] mask-f8"></div>
-                            <div class="crayon-frame-layer bg-[#E1D4C6] mask-f9"></div>
-                            <div class="crayon-frame-layer bg-[#E1D4C6] mask-f10"></div>
-                        </div>
+                <!-- 南下 -->
+                <div class="grid grid-cols-[max-content_1fr] items-start gap-x-1.5">
+                    <span class="font-bold whitespace-nowrap text-[#555555]">南下：</span>
+                    <div class="leading-relaxed">
+                        國道 1 號或 3 號接台 76 快速道路 → 22 號員林交流道下 → 轉台 1 線抵達
                     </div>
                 </div>
 
-                <!-- 顏色 2：溫柔奶茶 (#E4CFBB) -->
-                <div class="flex flex-col items-center space-y-2">
-                    <span class="text-xs md:text-sm font-bold text-cocoa">溫柔奶茶</span>
-                    <div class="relative w-28 h-20 flex justify-center items-center">
-                        <div class="crayon-group relative w-28 h-20 rounded-md overflow-hidden" data-color="#E4CFBB">
-                            <div class="crayon-frame-layer bg-[#E4CFBB] mask-f1 active-frame"></div>
-                            <div class="crayon-frame-layer bg-[#E4CFBB] mask-f2"></div>
-                            <div class="crayon-frame-layer bg-[#E4CFBB] mask-f3"></div>
-                            <div class="crayon-frame-layer bg-[#E4CFBB] mask-f4"></div>
-                            <div class="crayon-frame-layer bg-[#E4CFBB] mask-f5"></div>
-                            <div class="crayon-frame-layer bg-[#E4CFBB] mask-f6"></div>
-                            <div class="crayon-frame-layer bg-[#E4CFBB] mask-f7"></div>
-                            <div class="crayon-frame-layer bg-[#E4CFBB] mask-f8"></div>
-                            <div class="crayon-frame-layer bg-[#E4CFBB] mask-f9"></div>
-                            <div class="crayon-frame-layer bg-[#E4CFBB] mask-f10"></div>
-                        </div>
+                <!-- 北上 -->
+                <div class="grid grid-cols-[max-content_1fr] items-start gap-x-1.5">
+                    <span class="font-bold whitespace-nowrap text-[#555555]">北上：</span>
+                    <div class="leading-relaxed">
+                        國道 1 號於 220 號北斗交流道下 → 沿 150 縣道 → 轉台 1 線抵達
                     </div>
                 </div>
 
-                <!-- 顏色 3：可可棕色 (#724C2F) -->
-                <div class="flex flex-col items-center space-y-2">
-                    <span class="text-xs md:text-sm font-bold text-cocoa">可可棕色</span>
-                    <div class="relative w-28 h-20 flex justify-center items-center">
-                        <div class="crayon-group relative w-28 h-20 rounded-md overflow-hidden" data-color="#724C2F">
-                            <div class="crayon-frame-layer bg-[#724C2F] mask-f1 active-frame"></div>
-                            <div class="crayon-frame-layer bg-[#724C2F] mask-f2"></div>
-                            <div class="crayon-frame-layer bg-[#724C2F] mask-f3"></div>
-                            <div class="crayon-frame-layer bg-[#724C2F] mask-f4"></div>
-                            <div class="crayon-frame-layer bg-[#724C2F] mask-f5"></div>
-                            <div class="crayon-frame-layer bg-[#724C2F] mask-f6"></div>
-                            <div class="crayon-frame-layer bg-[#724C2F] mask-f7"></div>
-                            <div class="crayon-frame-layer bg-[#724C2F] mask-f8"></div>
-                            <div class="crayon-frame-layer bg-[#724C2F] mask-f9"></div>
-                            <div class="crayon-frame-layer bg-[#724C2F] mask-f10"></div>
-                        </div>
-                    </div>
+                <!-- 停車提醒框 -->
+                <div class="pt-1 text-left">
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-[#ffe9e4] rounded border border-[#e8cac6] text-[11px] sm:text-xs text-[#646464] tracking-tight">
+                <img src="threat.png" alt="注意事項"
+                     class="w-3.5 h-3.5 object-contain flex-shrink-0"
+                     style="filter: invert(86%) sepia(10%) saturate(630%) hue-rotate(314deg) brightness(98%) contrast(89%);"/>
+                    <span>為折抵園區停車，請開車的貴賓預先於下方表單提供車牌</span>
+                </span>
                 </div>
-
             </div>
-        </section>
 
-        <!-- ==================== 互動回填表單（網頁顯示，列印自動隱藏） ==================== -->
-        <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"
-                onload="if(submitted) { showThankYou(); }"></iframe>
+            <!-- 模擬馬路細線與汽車圖示 -->
+            <div class="relative w-full pt-4">
+                <img src="car.png" alt="汽車圖示"
+                     class="absolute right-1 -bottom-[6px] w-11 sm:w-13 h-auto object-contain pointer-events-none select-none"
+                     style="filter: invert(42%) sepia(35%) saturate(1025%) hue-rotate(313deg) brightness(92%) contrast(87%);"/>
+                <div class="w-full h-[1px] bg-[#B85B56]"></div>
+            </div>
+        </div>
 
-        <section class="no-print bg-white p-6 md:p-8 rounded-2xl shadow-md border-2 border-milkTea/40 space-y-6">
+        <!-- 2. 大眾運輸鐵路區塊 -->
+        <div class="relative space-y-3 pt-2">
+            <!-- 雙欄排版 -->
+            <div class="inline-block text-left text-[#555555] text-xs sm:text-sm font-sans space-y-2.5 max-w-full">
+
+                <!-- 高鐵彰化站 -->
+                <div class="grid grid-cols-[max-content_1fr] items-start gap-x-1.5">
+                    <span class="font-bold whitespace-nowrap text-[#555555]">高鐵彰化站：</span>
+                    <div class="leading-relaxed">
+                        出站後轉乘 7 號高鐵快捷公車 → 於永靖站下車
+                    </div>
+                </div>
+
+                <!-- 台鐵員林站 -->
+                <div class="grid grid-cols-[max-content_1fr] items-start gap-x-1.5">
+                    <span class="font-bold whitespace-nowrap text-[#555555]">台鐵員林站：</span>
+                    <div class="leading-relaxed">
+                        步行約八分鐘至員林轉運站 → 轉乘 7 號高鐵快捷公車 → 於永靖站下車
+                    </div>
+                </div>
+            </div>
+
+            <!-- 模擬鐵軌細線與列車圖示 -->
+            <div class="relative w-full pt-4">
+                <img src="train.png" alt="鐵路圖示"
+                     class="absolute left-1 -bottom-[6px] w-11 sm:w-13 h-auto object-contain pointer-events-none select-none -scale-x-100"
+                     style="filter: invert(42%) sepia(35%) saturate(1025%) hue-rotate(313deg) brightness(92%) contrast(87%);"/>
+                <div class="w-full h-[1px] bg-[#B85B56]"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== Dress Code 著裝色彩建議（預渲染零閃爍 10 幀堆疊） ==================== -->
+    <section id="dressCodeSection"
+             class="bg-white rounded-2xl p-6 shadow-sm border border-warmCard text-center space-y-6 overflow-hidden">
+        <div class="space-y-1">
+            <h2 class="text-xl font-bold tracking-widest text-milkTea uppercase">Dress Code 穿搭色彩</h2>
+            <p class="text-xs text-[#646464]">誠摯邀請大家穿著溫潤的大地色系，與庭園綠意相互輝映</p>
+        </div>
+
+        <!-- 三種色彩展示區：平均分配在左中右 (justify-around) -->
+        <div class="flex justify-around items-center pt-2">
+
+            <!-- 顏色 1：燕麥米色 (#E1D4C6) -->
+            <div class="flex flex-col items-center space-y-2">
+                <span class="text-xs md:text-sm font-bold text-cocoa">燕麥米色</span>
+                <div class="relative w-28 h-20 flex justify-center items-center">
+                    <div class="crayon-group relative w-28 h-20 rounded-md overflow-hidden" data-color="#E1D4C6">
+                        <div class="crayon-frame-layer bg-[#E1D4C6] mask-f1 active-frame"></div>
+                        <div class="crayon-frame-layer bg-[#E1D4C6] mask-f2"></div>
+                        <div class="crayon-frame-layer bg-[#E1D4C6] mask-f3"></div>
+                        <div class="crayon-frame-layer bg-[#E1D4C6] mask-f4"></div>
+                        <div class="crayon-frame-layer bg-[#E1D4C6] mask-f5"></div>
+                        <div class="crayon-frame-layer bg-[#E1D4C6] mask-f6"></div>
+                        <div class="crayon-frame-layer bg-[#E1D4C6] mask-f7"></div>
+                        <div class="crayon-frame-layer bg-[#E1D4C6] mask-f8"></div>
+                        <div class="crayon-frame-layer bg-[#E1D4C6] mask-f9"></div>
+                        <div class="crayon-frame-layer bg-[#E1D4C6] mask-f10"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 顏色 2：溫柔奶茶 (#E4CFBB) -->
+            <div class="flex flex-col items-center space-y-2">
+                <span class="text-xs md:text-sm font-bold text-cocoa">溫柔奶茶</span>
+                <div class="relative w-28 h-20 flex justify-center items-center">
+                    <div class="crayon-group relative w-28 h-20 rounded-md overflow-hidden" data-color="#E4CFBB">
+                        <div class="crayon-frame-layer bg-[#E4CFBB] mask-f1 active-frame"></div>
+                        <div class="crayon-frame-layer bg-[#E4CFBB] mask-f2"></div>
+                        <div class="crayon-frame-layer bg-[#E4CFBB] mask-f3"></div>
+                        <div class="crayon-frame-layer bg-[#E4CFBB] mask-f4"></div>
+                        <div class="crayon-frame-layer bg-[#E4CFBB] mask-f5"></div>
+                        <div class="crayon-frame-layer bg-[#E4CFBB] mask-f6"></div>
+                        <div class="crayon-frame-layer bg-[#E4CFBB] mask-f7"></div>
+                        <div class="crayon-frame-layer bg-[#E4CFBB] mask-f8"></div>
+                        <div class="crayon-frame-layer bg-[#E4CFBB] mask-f9"></div>
+                        <div class="crayon-frame-layer bg-[#E4CFBB] mask-f10"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 顏色 3：可可棕色 (#724C2F) -->
+            <div class="flex flex-col items-center space-y-2">
+                <span class="text-xs md:text-sm font-bold text-cocoa">可可棕色</span>
+                <div class="relative w-28 h-20 flex justify-center items-center">
+                    <div class="crayon-group relative w-28 h-20 rounded-md overflow-hidden" data-color="#724C2F">
+                        <div class="crayon-frame-layer bg-[#724C2F] mask-f1 active-frame"></div>
+                        <div class="crayon-frame-layer bg-[#724C2F] mask-f2"></div>
+                        <div class="crayon-frame-layer bg-[#724C2F] mask-f3"></div>
+                        <div class="crayon-frame-layer bg-[#724C2F] mask-f4"></div>
+                        <div class="crayon-frame-layer bg-[#724C2F] mask-f5"></div>
+                        <div class="crayon-frame-layer bg-[#724C2F] mask-f6"></div>
+                        <div class="crayon-frame-layer bg-[#724C2F] mask-f7"></div>
+                        <div class="crayon-frame-layer bg-[#724C2F] mask-f8"></div>
+                        <div class="crayon-frame-layer bg-[#724C2F] mask-f9"></div>
+                        <div class="crayon-frame-layer bg-[#724C2F] mask-f10"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ==================== 其他提醒 ==================== -->
+    <section id="reminders"
+             class="relative bg-warmCard/30 rounded-2xl p-5 md:p-6 text-center space-y-4 border border-warmCard overflow-hidden">
+
+        <!-- 標題 -->
+        <h3 class="text-xl font-bold tracking-widest text-cocoa/60">其他提醒</h3>
+
+        <!-- 條列式提醒內容（居中包覆 + 靠左工整排列） -->
+        <div class="inline-block text-left text-[#646464] text-xs sm:text-sm font-sans space-y-3 max-w-full leading-relaxed">
+            <!-- 提醒 1：寵物規範 -->
+            <div class="grid grid-cols-[1rem_1fr] items-start gap-1">
+                <span class="text-[#646464] font-bold">▪</span>
+                <div>
+                    喜宴場地無法攜帶寵物入內，請讓毛寶貝在舒適的家中休息
+                </div>
+            </div>
+
+            <!-- 提醒 2：酒品招待 -->
+            <div class="grid grid-cols-[1rem_1fr] items-start gap-1">
+                <span class="text-[#646464] font-bold">▪</span>
+                <div>
+                    現場已精心備妥威士忌、精選紅酒與啤酒暢飲，貴賓可無須自行備酒
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 互動回填表單（左右100%滿版無邊框 #CEA580 背景） ==================== -->
+    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"
+            onload="if(submitted) { showThankYou(); }"></iframe>
+
+    <section class="no-print relative left-1/2 -translate-x-1/2 w-screen bg-[#CEA580] py-10 px-5 text-white">
+        <!-- 內部內容限制最大寬度，保持與上方內容一致的工整閱讀視線 -->
+        <div class="max-w-xl md:max-w-2xl mx-auto space-y-6">
+
+            <!-- 標題與引導文字 -->
             <div class="text-center space-y-1">
-                <h3 class="text-lg md:text-xl font-bold text-cocoa">出席資訊與遊園登記</h3>
-                <p class="text-xs text-stone-500">感謝您的祝福，請撥冗填寫以利我們提前為您安排停車與園區門票</p>
+                <h3 class="text-lg md:text-xl font-bold tracking-wider text-white">出席資訊 &amp; 遊園登記</h3>
+                <p class="text-xs text-white/80">請撥冗填寫，以利提前安排停車與園區門票，感謝您</p>
             </div>
 
             <form
@@ -524,110 +646,111 @@
             >
                 <!-- 1. 姓名 -->
                 <div>
-                    <label class="block font-semibold mb-1.5 text-cocoa">您的尊姓大名 <span
-                            class="text-red-500">*</span></label>
-                    <input type="text" name="entry.448957124" required placeholder="請填寫一位主要聯絡人姓名（例：王小明）"
-                           class="w-full px-3.5 py-2.5 border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-milkTea bg-warmCard/20"/>
+                    <label class="block font-semibold mb-1.5 text-white">您的大名 <span
+                            class="text-[#B85B56]">*</span></label>
+                    <input type="text" name="entry.448957124" required placeholder="請填寫主要聯絡人全名，後續修改資料將以此欄為依據覆蓋"
+                           class="w-full px-3.5 py-2.5 border border-white/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-white bg-white text-stone-800 placeholder:text-stone-400 shadow-sm"/>
                 </div>
 
                 <!-- 2. 出席代表形式 -->
                 <div>
-                    <label class="block font-semibold mb-2 text-cocoa">出席代表形式 <span class="text-red-500">*</span></label>
+                    <label class="block font-semibold mb-2 text-white">表單填寫形式 <span
+                            class="text-[#B85B56]">*</span></label>
                     <div class="grid grid-cols-2 gap-3">
-                        <label class="flex items-center gap-2 p-3 border rounded-xl cursor-pointer hover:bg-warmCard/30 transition">
-                            <input type="radio" name="entry.1227706663" value="個人親自出席" checked
-                                   onchange="toggleFamilyGroup(false)" class="text-milkTea focus:ring-milkTea"/>
-                            <span>個人親自出席</span>
+                        <label class="flex items-center gap-2.5 p-3 border border-white/25 rounded-xl cursor-pointer bg-white/10 hover:bg-white/20 transition select-none">
+                            <input type="radio" name="entry.1227706663" value="個人填寫" checked
+                                   onchange="toggleFamilyGroup(false)" class="custom-radio"/>
+                            <span class="text-white text-xs sm:text-sm">個人自行 填寫</span>
                         </label>
-                        <label class="flex items-center gap-2 p-3 border rounded-xl cursor-pointer hover:bg-warmCard/30 transition">
-                            <input type="radio" name="entry.1227706663" value="代表家庭 / 親友同行"
-                                   onchange="toggleFamilyGroup(true)" class="text-milkTea focus:ring-milkTea"/>
-                            <span>代表家庭 / 親友同行</span>
+                        <label class="flex items-center gap-2.5 p-3 border border-white/25 rounded-xl cursor-pointer bg-white/10 hover:bg-white/20 transition select-none">
+                            <input type="radio" name="entry.1227706663" value="代表填寫"
+                                   onchange="toggleFamilyGroup(true)" class="custom-radio"/>
+                            <span class="text-white text-xs sm:text-sm">代表 家庭/親友 填寫</span>
                         </label>
                     </div>
                 </div>
 
                 <!-- 2-A. 家庭/團體動態展開區塊 -->
-                <div id="familySection" class="hidden p-4 bg-warmCard/30 rounded-xl border border-warmCard space-y-3">
+                <div id="familySection" class="hidden p-4 bg-black/10 rounded-xl border border-white/20 space-y-3">
                     <div>
-                        <label class="block font-semibold mb-1 text-cocoa">同行總出席人數（含您本人） <span
-                            class="text-red-500">*</span></label>
+                        <label class="block font-semibold mb-1 text-white">出席總人數（含您本人） <span
+                                class="text-[#B85B56]">*</span></label>
                         <select id="guestCountSelect" name="entry.1188546797"
-                                class="w-full px-3.5 py-2 border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-milkTea bg-white">
-                            <option value="2 位">2 位</option>
-                            <option value="3 位">3 位</option>
-                            <option value="4 位">4 位</option>
-                            <option value="5 位">5 位</option>
-                            <option value="6 位">6 位</option>
-                            <option value="7 位">7 位</option>
-                            <option value="8 位">8 位</option>
-                            <option value="9 位">9 位</option>
-                            <option value="10 位">10 位</option>
+                                class="w-full px-3.5 py-2 border border-white/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-white bg-white text-stone-800">
+                            <option value="2位">2 位</option>
+                            <option value="3位">3 位</option>
+                            <option value="4位">4 位</option>
+                            <option value="5位">5 位</option>
+                            <option value="6位">6 位</option>
+                            <option value="7位">7 位</option>
+                            <option value="8位">8 位</option>
+                            <option value="9位">9 位</option>
+                            <option value="10位">10 位</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block font-semibold mb-1 text-cocoa">同行成員姓名 / 寶號（非必填）</label>
-                        <input type="text" name="entry.1239814391" placeholder="可填寫親友姓名，方便安排入席名牌"
-                               class="w-full px-3.5 py-2 border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-milkTea bg-white"/>
+                        <label class="block font-semibold mb-1 text-white">成員名單（非必填）</label>
+                        <input type="text" name="entry.1239814391" placeholder="可填寫親友姓名，方便確認所包含的成員"
+                               class="w-full px-3.5 py-2 border border-white/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-white bg-white text-stone-800 placeholder:text-stone-400"/>
                     </div>
                 </div>
 
                 <!-- 3. 前往交通方式 -->
                 <div>
-                    <label class="block font-semibold mb-2 text-cocoa">當日預計前往方式 <span
-                            class="text-red-500">*</span></label>
+                    <label class="block font-semibold mb-2 text-white">交通方式 <span
+                            class="text-[#B85B56]">*</span></label>
                     <div class="space-y-2">
-                        <label class="flex items-center gap-2.5 p-3 border rounded-xl cursor-pointer hover:bg-warmCard/30 transition">
-                            <input type="radio" name="entry.1574191851" value="自行開車（駕駛）"
-                                   onchange="toggleCarInput(true)" class="text-milkTea focus:ring-milkTea"/>
-                            <span>自行開車（駕駛）</span>
+                        <label class="flex items-center gap-2.5 p-3 border border-white/25 rounded-xl cursor-pointer bg-white/10 hover:bg-white/20 transition select-none">
+                            <input type="radio" name="entry.1574191851" value="駕駛"
+                                   onchange="toggleCarInput(true)" class="custom-radio"/>
+                            <span class="text-white text-xs sm:text-sm">自行開車（駕駛）</span>
                         </label>
-                        <label class="flex items-center gap-2.5 p-3 border rounded-xl cursor-pointer hover:bg-warmCard/30 transition">
-                            <input type="radio" name="entry.1574191851" value="搭乘同行親友車輛（共乘乘客）" checked
-                                   onchange="toggleCarInput(false)" class="text-milkTea focus:ring-milkTea"/>
-                            <span>搭乘同行親友車輛（共乘）</span>
+                        <label class="flex items-center gap-2.5 p-3 border border-white/25 rounded-xl cursor-pointer bg-white/10 hover:bg-white/20 transition select-none">
+                            <input type="radio" name="entry.1574191851" value="乘客" checked
+                                   onchange="toggleCarInput(false)" class="custom-radio"/>
+                            <span class="text-white text-xs sm:text-sm">與同行親友共乘（乘客）</span>
                         </label>
-                        <label class="flex items-center gap-2.5 p-3 border rounded-xl cursor-pointer hover:bg-warmCard/30 transition">
-                            <input type="radio" name="entry.1574191851" value="搭乘大眾運輸工具或步行"
-                                   onchange="toggleCarInput(false)" class="text-milkTea focus:ring-milkTea"/>
-                            <span>搭乘大眾運輸工具（高鐵／台鐵＋公車）</span>
+                        <label class="flex items-center gap-2.5 p-3 border border-white/25 rounded-xl cursor-pointer bg-white/10 hover:bg-white/20 transition select-none">
+                            <input type="radio" name="entry.1574191851" value="大眾運輸"
+                                   onchange="toggleCarInput(false)" class="custom-radio"/>
+                            <span class="text-white text-xs sm:text-sm">搭乘大眾運輸工具或步行</span>
                         </label>
                     </div>
                 </div>
 
                 <!-- 3-A. 車牌號碼動態展開區塊 -->
-                <div id="carSection" class="hidden p-4 bg-warmCard/30 rounded-xl border border-warmCard space-y-1.5">
-                    <label class="block font-semibold text-cocoa">車輛車牌號碼 <span
-                            class="text-red-500">*</span></label>
+                <div id="carSection" class="hidden p-4 bg-black/10 rounded-xl border border-white/20 space-y-1.5">
+                    <label class="block font-semibold text-white">車牌號碼 <span
+                            class="text-[#B85B56]">*</span></label>
                     <input type="text" id="carPlateInput" name="entry.821969454"
-                           placeholder="例：ABC-1234（方便提前登錄折抵停車費）"
-                           class="w-full px-3.5 py-2.5 border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-milkTea bg-white"/>
+                           placeholder="例：ABC-1234（方便後續折抵園區停車）"
+                           class="w-full px-3.5 py-2.5 border border-white/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-white bg-white text-stone-800 placeholder:text-stone-400"/>
                 </div>
 
                 <!-- 4. 遊園意向 -->
                 <div>
-                    <label class="block font-semibold mb-1 text-cocoa">成美文化園遊園門票索取 <span
-                            class="text-red-500">*</span></label>
-                    <p class="text-xs text-stone-500 mb-2">
+                    <label class="block font-semibold mb-1 text-white">成美文化園遊園登記 <span
+                            class="text-[#B85B56]">*</span></label>
+                    <p class="text-xs text-white/80 mb-2">
                         成美文化園庭園景致怡人，入園需憑券。我們將為貴賓提前備妥票券。</p>
                     <select name="entry.228889561"
-                            class="w-full px-3.5 py-2.5 border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-milkTea bg-warmCard/20">
-                        <option value="需要，預計入園漫遊（依出席總人數備票）">是，預計順道入園漫遊（依出席總人數為您備票）
-                        </option>
-                        <option value="不需要，僅參加喜宴">否，僅參加喜宴</option>
+                            class="w-full px-3.5 py-2.5 border border-white/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-white bg-white text-stone-800">
+                        <option value="需要遊園">是，登記遊園 (依出席總人數備票)</option>
+                        <option value="不遊園">否，僅參加喜宴</option>
                     </select>
                 </div>
 
                 <!-- 送出按鈕 -->
                 <button type="submit" id="submit-btn"
-                        class="w-full bg-milkTea hover:bg-opacity-90 text-white font-bold py-3.5 rounded-xl shadow transition duration-150">
-                    確認送出登記資料
+                        class="w-full bg-[#4A3E3D] hover:bg-[#3E3433] active:scale-[0.99] text-white font-bold py-3.5 rounded-xl shadow-lg transition duration-150">
+                    確認送出出席資訊
                 </button>
             </form>
-        </section>
+        </div>
+    </section>
 
-        <!-- 輪播控制與表單資料調閱腳本 -->
-        <script>
+    <!-- 輪播控制與表單資料調閱腳本 -->
+    <script>
           // ==================== 開場控制與音樂觸發邏輯 ====================
           const introOverlay = document.getElementById('introOverlay');
           const introVideo = document.getElementById('introVideo');
@@ -680,12 +803,10 @@
           // 影片播放結束：停在最後一幀，按鈕變大、發光提示點擊
           if (introVideo) {
             introVideo.addEventListener('ended', () => {
-              // 確保停在最後一幀畫面
               introVideo.pause();
 
               if (skipIntroBtn && btnText) {
                 btnText.innerHTML = '點擊進入邀請函 ❯';
-                // 替換樣式為明顯的奶茶色高光卡片並啟動呼吸動效
                 skipIntroBtn.className = 'px-7 py-3 rounded-full bg-[#F4ECE4] text-[#4A3E3D] font-bold text-sm tracking-widest shadow-xl cursor-pointer animate-enter-pulse border border-white/60 transition-all duration-300';
               }
             });
@@ -703,13 +824,10 @@
             if (isIntroClosed || !introOverlay) return;
             isIntroClosed = true;
 
-            // 1. 瞬間校正到首頁最頂部
             window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
 
-            // 2. 利用使用者明確點擊事件，立即順暢啟動音樂
             playBackgroundMusic();
 
-            // 3. 淡出並移除開場層
             introOverlay.style.opacity = '0';
             introOverlay.style.pointerEvents = 'none';
 
@@ -916,7 +1034,7 @@
               repRadios.forEach(r => {
                 if (r.value === data.repType) r.checked = true;
               });
-              const isFamily = (data.repType === '代表家庭 / 親友同行');
+              const isFamily = (data.repType === '代表 家庭/親友 填寫' || data.repType === '代表家庭 / 親友同行');
               toggleFamilyGroup(isFamily);
               if (isFamily && data.guestCount) document.getElementById('guestCountSelect').value = data.guestCount;
               if (isFamily && data.members) document.querySelector('input[name="entry.1239814391"]').value = data.members;
@@ -934,9 +1052,9 @@
 
               const btn = document.getElementById('submit-btn');
               if (btn) {
-                btn.innerText = '更新登記資料（已載入上次紀錄）';
-                btn.classList.remove('bg-milkTea');
-                btn.classList.add('bg-cocoa');
+                btn.innerText = '更新出席資料（已載入上次紀錄）';
+                btn.classList.remove('bg-[#4A3E3D]');
+                btn.classList.add('bg-[#332A29]');
               }
             } catch (err) {
               console.error('調閱歷史資料時發生異常：', err);
@@ -961,7 +1079,7 @@
             const btn = document.getElementById('submit-btn');
             if (btn) {
               btn.innerText = '✓ 資料已更新完成';
-              btn.classList.remove('bg-milkTea');
+              btn.classList.remove('bg-[#4A3E3D]');
               btn.classList.add('bg-stone-700');
             }
           }
@@ -1056,9 +1174,7 @@
           // 初始化執行
           handleXiScrollAnimation();
           handleDressCodeAnimation();
-        </script>
-    </div>
-
+    </script>
 </main>
 </body>
 </html>
